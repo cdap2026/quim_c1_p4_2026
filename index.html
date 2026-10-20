@@ -1,0 +1,3951 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examen Parcial IV Periodo - Química 8° | Mr. Cristian Ayazo</title>
+  <script src="assets/banner-data.js"></script>
+
+  <!-- CDN Principal + Respaldo automático con onerror para jsPDF (con soporte de cifrado PDF) -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js';"
+  ></script>
+
+  <!-- CDN Principal + Respaldo automático para QRious (generación directa en Canvas) -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"
+    onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js';"
+  ></script>
+
+  <!-- CDN Principal + Respaldo automático con onerror para QRCode.js -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';"
+  ></script>
+
+  <style>
+    :root {
+      --primary: #081b38;
+      --primary-light: #153866;
+      --accent: #c89d28;
+      --accent-bright: #e5bd43;
+      --accent-soft: #fcf6e5;
+      --bg: #eef2f7;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --warning: #b45309;
+      --warning-bg: #fef3c7;
+      --danger: #b91c1c;
+      --danger-bg: #fee2e2;
+      --shadow: 0 12px 28px -6px rgba(8, 27, 56, 0.14), 0 4px 12px -2px rgba(8, 27, 56, 0.08);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    textarea, input[type="text"], input[type="password"] {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(21, 56, 102, 0.05) 0%, transparent 28%),
+        radial-gradient(circle at 88% 82%, rgba(200, 157, 40, 0.07) 0%, transparent 30%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ENCABEZADO Y BANNER INSTITUCIONAL */
+    .institutional-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-bottom: 4px solid var(--accent);
+      padding: 12px 16px;
+      box-shadow: 0 4px 14px rgba(8, 27, 56, 0.2);
+    }
+
+    .header-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .banner-frame {
+      width: 100%;
+      background: #ffffff;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    #institutional-banner-img {
+      width: 100%;
+      max-height: 170px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .sub-header-pills {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 2px 4px;
+    }
+
+    .sub-header-title {
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .exam-meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(229, 189, 67, 0.45);
+      padding: 3px 11px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fef08a;
+    }
+
+    /* BARRA DE MONITOREO EN VIVO */
+    .monitoring-bar {
+      background: #ffffff;
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 3px 10px rgba(8, 27, 56, 0.07);
+    }
+
+    .monitoring-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .status-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .timer-global {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--accent);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .timer-global.urgent {
+      background: var(--danger);
+      border-color: var(--danger);
+      animation: pulseAlert 1.2s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .mic-meter-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .mic-bar-track {
+      width: 96px;
+      height: 11px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mic-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #16a34a;
+      transition: width 0.1s linear, background-color 0.15s ease;
+    }
+
+    .mic-threshold-mark {
+      position: absolute;
+      left: 70%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--danger);
+    }
+
+    .btn-teacher-top {
+      background: #fff1f2;
+      color: #9f1239;
+      border: 1.5px solid #fecdd3;
+      padding: 6px 13px;
+      border-radius: 9px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.15;
+      transition: all 0.2s;
+    }
+
+    .btn-teacher-top:hover {
+      background: #ffe4e6;
+      border-color: #fda4af;
+    }
+
+    .btn-teacher-top span.sub {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #be123c;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main-container {
+      max-width: 1020px;
+      width: 100%;
+      margin: 22px auto;
+      padding: 0 16px 40px;
+      flex: 1;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid #dbe3ee;
+      border-top: 5px solid var(--primary);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* TARJETAS VISUALES TEMÁTICAS DE QUÍMICA 8° */
+    .thematic-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .theme-visual-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border: 1.5px solid #cbd5e1;
+      border-top: 4px solid var(--primary-light);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 3px 10px rgba(8, 27, 56, 0.05);
+    }
+
+    .theme-visual-icon {
+      width: 66px;
+      height: 66px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      border: 1.5px solid #e9c96b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .theme-visual-text h4 {
+      font-size: 0.92rem;
+      color: var(--primary);
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+
+    .theme-visual-text p {
+      font-size: 0.79rem;
+      color: var(--muted);
+      line-height: 1.38;
+    }
+
+    /* LÁMINA ILUSTRADA DE CONTEXTO POR PREGUNTA */
+    .context-illustration-card {
+      background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+      border: 1.5px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      box-shadow: inset 0 1px 4px rgba(8, 27, 56, 0.04);
+    }
+
+    .context-illustration-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 6px;
+    }
+
+    .context-illustration-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .context-illustration-sub {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #1e40af;
+      background: #dbeafe;
+      padding: 2px 9px;
+      border-radius: 999px;
+    }
+
+    .context-illustration-svg-wrap {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #dbe3ee;
+      border-radius: 10px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .context-illustration-svg-wrap svg {
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+      max-height: 165px;
+      display: block;
+    }
+
+    /* PANTALLA DE BIENVENIDA */
+    .welcome-title {
+      font-size: 1.4rem;
+      color: var(--primary);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .teacher-credit-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-soft);
+      border: 1.5px solid var(--accent);
+      color: var(--primary);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .welcome-subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .rule-item {
+      background: #f8fafc;
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+
+    .rule-item strong {
+      display: block;
+      color: var(--primary);
+      margin-bottom: 4px;
+      font-size: 0.89rem;
+    }
+
+    .resume-alert {
+      background: var(--warning-bg);
+      border: 2px solid #f59e0b;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .form-single-box {
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+    }
+
+    .form-single-box label {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(21, 56, 102, 0.12);
+    }
+
+    .form-control.valid {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    .name-validation-hint {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--warning);
+    }
+
+    .name-validation-hint.ok {
+      color: var(--success);
+    }
+
+    .mic-setup-panel {
+      background: #f8fafc;
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .mic-setup-panel.ready {
+      border-style: solid;
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+
+    .banner-loader-row {
+      background: var(--accent-soft);
+      border: 1px solid #f3d98b;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      font-size: 0.82rem;
+      color: #5c4508;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .start-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 8px;
+    }
+
+    .start-readiness-hint {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      border: 1px solid var(--accent);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      background: #b0871e;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    /* PANTALLA DE PREGUNTAS */
+    .question-header-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .badges-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-phase {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.79rem;
+      font-weight: 700;
+    }
+
+    .badge-topic {
+      background: var(--accent-soft);
+      color: #785407;
+      border: 1px solid #e9c96b;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.79rem;
+      font-weight: 700;
+    }
+
+    .badge-points {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .per-question-timer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .context-box {
+      background: #f8fafc;
+      border-left: 5px solid var(--primary);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+      font-size: 0.97rem;
+      line-height: 1.74;
+      color: #1e293b;
+      text-align: justify;
+    }
+
+    .question-stem {
+      font-size: 1.06rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .option-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .option-card:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .option-card.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+      box-shadow: 0 2px 8px rgba(8, 27, 56, 0.08);
+    }
+
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: var(--primary);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.92rem;
+    }
+
+    .option-card.selected .option-letter {
+      background: var(--primary);
+      color: var(--accent-bright);
+    }
+
+    .option-text {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.5;
+      padding-top: 3px;
+    }
+
+    /* PREGUNTAS ABIERTAS */
+    .open-instructions {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e3a8a;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      margin-bottom: 12px;
+    }
+
+    .open-textarea {
+      width: 100%;
+      min-height: 170px;
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.96rem;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .open-textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .open-counters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .counter-pill {
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .counter-pill.ok {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .question-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .min-time-msg {
+      color: var(--warning);
+      background: var(--warning-bg);
+      border: 1px solid #fcd34d;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .min-time-msg.ready {
+      color: var(--success);
+      background: var(--success-bg);
+      border-color: #86efac;
+    }
+
+    /* PANTALLA DE RESULTADOS */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .stat-card .value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .stat-card.final-grade-card {
+      background: var(--primary);
+      color: #ffffff;
+      border: 2px solid var(--accent);
+    }
+
+    .stat-card.final-grade-card .label {
+      color: #cbd5e1;
+    }
+
+    .stat-card.final-grade-card .value {
+      color: var(--accent-bright);
+      font-size: 1.75rem;
+    }
+
+    .qr-verification-section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 24px;
+      background: #f8fafc;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin: 22px 0;
+    }
+
+    .qr-box {
+      background: #ffffff;
+      padding: 14px;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(8, 27, 56, 0.08);
+    }
+
+    #qr-display-img {
+      width: 220px;
+      height: 220px;
+      display: block;
+    }
+
+    .qr-info {
+      flex: 1;
+      min-width: 280px;
+      max-width: 520px;
+    }
+
+    .qr-info h3 {
+      color: var(--primary);
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+    }
+
+    .verification-hash-box {
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      font-weight: 800;
+      background: #ffffff;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 6px 0 10px;
+      letter-spacing: 1px;
+    }
+
+    .qr-report-preview {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.76rem;
+      line-height: 1.45;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      white-space: pre-wrap;
+      border-left: 4px solid var(--accent);
+    }
+
+    .offscreen-qr-renderer {
+      position: fixed;
+      left: -9999px;
+      top: -9999px;
+      width: 320px;
+      height: 320px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* MODALES Y BLOQUEOS */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 27, 56, 0.86);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      max-width: 480px;
+      width: 100%;
+      padding: 26px;
+      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.35);
+      text-align: center;
+      border-top: 6px solid var(--primary);
+    }
+
+    .modal-card.danger {
+      border-top-color: var(--danger);
+    }
+
+    .modal-card h3 {
+      font-size: 1.22rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .modal-card p {
+      font-size: 0.94rem;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    .disclaimer-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: #f1f5f9;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 18px;
+      }
+      .monitoring-inner {
+        justify-content: center;
+      }
+    }
+
+
+    /* ===== MEJORAS DE EXPERIENCIA, ACCESIBILIDAD Y PRESENTACIÓN ===== */
+    :root {
+      --focus-ring: 0 0 0 4px rgba(200, 157, 40, 0.22);
+      --surface-soft: #f7f9fc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(8,27,56,.018) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(8,27,56,.018) 1px, transparent 1px);
+      background-size: 34px 34px;
+      z-index: -1;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    .option-card:focus-visible {
+      outline: 3px solid var(--accent-bright);
+      outline-offset: 3px;
+      box-shadow: var(--focus-ring);
+    }
+
+    .exam-hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #071630 0%, #153866 72%, #244b80 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 24px 26px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(229,189,67,.55);
+      box-shadow: 0 12px 30px rgba(8,27,56,.18);
+    }
+
+    .exam-hero::after {
+      content: "C  H  O  N";
+      position: absolute;
+      right: 22px;
+      top: 14px;
+      font-size: clamp(2.4rem, 7vw, 5.2rem);
+      font-weight: 900;
+      letter-spacing: .16em;
+      color: rgba(255,255,255,.045);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .exam-hero-kicker {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(229,189,67,.14);
+      border: 1px solid rgba(229,189,67,.45);
+      color: #fde68a;
+      font-size: .78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+
+    .exam-hero h1 {
+      font-size: clamp(1.45rem, 4vw, 2.15rem);
+      line-height: 1.15;
+      margin-bottom: 8px;
+      max-width: 760px;
+    }
+
+    .exam-hero p {
+      max-width: 810px;
+      color: #dbeafe;
+      font-size: .96rem;
+    }
+
+    .competency-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 17px;
+    }
+
+    .competency-chip {
+      padding: 10px 12px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 10px;
+      font-size: .82rem;
+      line-height: 1.35;
+    }
+
+    .competency-chip strong { color: #fde68a; display:block; margin-bottom:2px; }
+
+    .assessment-map {
+      background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+      border: 1px solid #d9e2ec;
+      border-radius: 14px;
+      padding: 18px;
+      margin: 0 0 20px;
+    }
+
+    .assessment-map h3 {
+      color: var(--primary);
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .assessment-map-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .map-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px;
+      min-height: 82px;
+    }
+
+    .map-item .map-n { font-weight: 900; color: var(--accent); font-size: 1.1rem; }
+    .map-item .map-t { font-size: .8rem; color: var(--muted); line-height:1.35; }
+
+    .progress-shell {
+      margin: 4px 0 16px;
+      background: #e2e8f0;
+      height: 9px;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(15,23,42,.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary-light), var(--accent));
+      transition: width .35s ease;
+    }
+
+    .progress-meta {
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      font-size:.8rem;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .question-stem::before {
+      content: "Pregunta";
+      display:block;
+      width:max-content;
+      margin-bottom:7px;
+      padding:3px 8px;
+      border-radius:999px;
+      background:var(--accent-soft);
+      color:#7c5a09;
+      font-size:.72rem;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      font-weight:900;
+    }
+
+    .option-card {
+      position: relative;
+      min-height: 62px;
+    }
+
+    .option-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(8,27,56,.07);
+    }
+
+    .option-card.selected::after {
+      content: "Seleccionada";
+      position:absolute;
+      right:12px;
+      top:9px;
+      font-size:.67rem;
+      font-weight:800;
+      color:#1e3a8a;
+      background:#dbeafe;
+      border-radius:999px;
+      padding:2px 7px;
+    }
+
+    .pedagogical-note {
+      border: 1px solid #bae6fd;
+      background: #f0f9ff;
+      color: #0c4a6e;
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: .82rem;
+      line-height: 1.5;
+      margin: 12px 0 18px;
+    }
+
+    .academic-integrity-note {
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      color:#7c2d12;
+      padding:12px 14px;
+      border-radius:10px;
+      margin:14px 0;
+      font-size:.82rem;
+    }
+
+    .result-status-banner {
+      border-radius: 12px;
+      padding: 13px 16px;
+      margin-bottom: 14px;
+      font-weight: 800;
+      background: #eff6ff;
+      color: #1e3a8a;
+      border: 1px solid #bfdbfe;
+    }
+
+    @media (max-width: 760px) {
+      .competency-strip, .assessment-map-grid { grid-template-columns: 1fr 1fr; }
+      .exam-hero { padding: 20px 18px; }
+      .exam-hero::after { display:none; }
+      .monitoring-inner { align-items:stretch; }
+      .status-group { width:100%; }
+      .status-chip, .mic-meter-box { flex:1 1 145px; justify-content:center; }
+      .btn-teacher-top { width:100%; align-items:center; }
+    }
+
+    @media (max-width: 470px) {
+      .competency-strip, .assessment-map-grid { grid-template-columns: 1fr; }
+      .main-container { padding-left:10px; padding-right:10px; }
+      .question-footer { align-items:stretch; }
+      .question-footer .btn { width:100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior:auto !important; transition:none !important; animation:none !important; }
+    }
+
+
+    .answer-monitor-strip { position: sticky; top: 74px; z-index: 35; display:flex; gap:12px; align-items:center; justify-content:space-between; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border:1.5px solid var(--border); border-left:5px solid var(--accent); border-radius:12px; padding:10px 12px; margin:0 0 14px; box-shadow:0 6px 18px rgba(8,27,56,.10); }
+    .answer-timer-sticky { flex:0 0 auto; background:var(--primary); color:#fff; border-color:var(--accent); font-size:.9rem; }
+
+    .answer-timer-sticky.timer-running { box-shadow: 0 0 0 3px rgba(200,157,40,.18); }
+    .answer-timer-sticky.timer-ready { background: var(--success); border-color:#86efac; }
+    .answer-timer-sticky.timer-urgent { background: var(--danger); border-color:#fecaca; animation:pulseAlert 1s infinite; }
+    .mini-progress-wrap { flex:1; min-width:180px; }
+    .inline-progress-shell { margin-bottom:0; }
+    .btn-closed-teacher { background:#7f1d1d; color:#fff; border:1px solid #fecaca; }
+    .btn-closed-teacher:hover:not(:disabled){ background:#991b1b; transform:translateY(-1px); }
+    @media (max-width:640px){ .answer-monitor-strip{top:118px; flex-direction:column; align-items:stretch;} .answer-timer-sticky{justify-content:center;} }
+
+    /* ===== REFINAMIENTO VISUAL 2026 + CONTROLES DOCENTES ===== */
+    .main-container { max-width: 1080px; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.98));
+      border: 1px solid rgba(148,163,184,.34);
+      box-shadow: 0 18px 45px rgba(8,27,56,.12);
+    }
+    .question-header-bar {
+      background: linear-gradient(90deg, #f8fafc, #fffaf0);
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .context-box {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid #dbe3ee;
+      border-left: 5px solid var(--primary);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+    }
+    .option-card { box-shadow: 0 2px 7px rgba(15,23,42,.035); }
+    .option-card.selected { box-shadow: 0 8px 20px rgba(21,56,102,.12); }
+    .btn { box-shadow: 0 4px 12px rgba(15,23,42,.10); }
+    .btn-teacher-advance {
+      background: linear-gradient(135deg, #6d28d9, #4c1d95);
+      color: #fff;
+      border: 1px solid #c4b5fd;
+    }
+    .btn-teacher-advance:hover:not(:disabled) {
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(91,33,182,.22);
+    }
+    #mic-setup-box { background: linear-gradient(135deg,#f8fafc,#eff6ff); }
+    #screen-exam { position: relative; overflow: visible; }
+    @media (max-width: 760px) {
+      #btn-teacher-next { width:100%; }
+    }
+    /* ===== BANNER FIJO DURANTE EL EXAMEN + MEDIDOR DE dB ===== */
+    #institutional-banner-img { aspect-ratio: 1830 / 326; }
+    .sticky-stack .monitoring-bar { position: static; }
+    body.exam-live .sticky-stack { position: sticky; top: 0; z-index: 60; }
+    body.exam-live .institutional-header { padding: 5px 12px; border-bottom-width: 3px; }
+    body.exam-live .header-inner { gap: 0; }
+    body.exam-live .sub-header-pills { display: none; }
+    body.exam-live #institutional-banner-img { max-height: 82px; }
+    body.exam-live .monitoring-inner { padding: 6px 14px; }
+    body.results-view .btn-db-toggle { display: none; }
+    .answer-monitor-strip { top: calc(var(--stack-h, 74px) + 2px); }
+    .btn-db-toggle { display: inline-flex; align-items: center; gap: 7px; background: #eff6ff; border: 1.5px solid var(--primary-light); color: var(--primary); padding: 6px 12px; border-radius: 10px; font-size: .84rem; font-weight: 800; cursor: pointer; }
+    .btn-db-toggle .db-btn-val { min-width: 52px; text-align: center; background: rgba(8,27,56,.12); border-radius: 6px; padding: 0 6px; font-variant-numeric: tabular-nums; }
+    .btn-db-toggle[aria-pressed="true"] { background: var(--primary); color: #fff; border-color: var(--accent); }
+    .btn-db-toggle[aria-pressed="true"] .db-btn-val { background: rgba(255,255,255,.18); }
+    .db-panel { position: fixed; right: 14px; top: calc(var(--stack-h, 120px) + 10px); width: min(320px, calc(100vw - 28px)); background: #fff; border: 2px solid var(--accent); border-radius: 14px; box-shadow: var(--shadow); z-index: 70; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+    .db-head { display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: var(--primary); }
+    .db-head button { border: 0; background: #e2e8f0; border-radius: 8px; width: 28px; height: 28px; cursor: pointer; font-weight: 800; }
+    #mic-meter-text { text-align: center; font-size: 2rem; font-weight: 900; color: var(--primary); font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .db-level { text-align: center; font-weight: 800; font-size: .84rem; border-radius: 999px; padding: 3px 10px; background: #e2e8f0; color: var(--muted); }
+    .db-level.ok { background: var(--success-bg); color: var(--success); }
+    .db-level.mid { background: var(--warning-bg); color: var(--warning); }
+    .db-level.high { background: var(--danger-bg); color: var(--danger); }
+    .db-track { width: 100%; height: 16px; }
+    .db-stats { font-size: .76rem; font-weight: 700; color: var(--primary); text-align: center; }
+    #db-history { width: 100%; height: 48px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; }
+    .db-note { font-size: .7rem; color: var(--muted); line-height: 1.35; }
+    @media (max-width: 760px) { .btn-db-toggle { flex: 1 1 145px; justify-content: center; } }
+  </style>
+</head>
+<body>
+
+  <!-- ENCABEZADO CON EL BANNER INSTITUCIONAL INTEGRADO SIN DEFORMACIÓN -->
+  <div class="sticky-stack" id="sticky-stack">
+  <header class="institutional-header">
+    <div class="header-inner">
+      <div class="banner-frame">
+        <img
+          id="institutional-banner-img" width="1830" height="326"
+          alt="Banner Institucional Examen Parcial IV Periodo - 8° Grade Química - Gimnasio Cristiano Faro de Luz"
+        />
+      </div>
+      <div class="sub-header-pills">
+        <div class="sub-header-title">
+          GIMNASIO CRISTIANO FARO DE LUZ — DOCENTE: MR. CRISTIAN AYAZO | CÓDIGO: F-GA2-004 · VERSIÓN: 2
+        </div>
+        <div class="exam-meta-pills">
+          <span class="meta-pill">Asignatura: QUÍMICA</span>
+          <span class="meta-pill">Grado: 8° (8° GRADE)</span>
+          <span class="meta-pill">Docente: Mr. Cristian Ayazo</span>
+          <span class="meta-pill">Cerradas: 3.7 pts | Abiertas: 1.3 pts | Total: 5.0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BARRA PERMANENTE DE MONITOREO EN DECIBELES (dB) Y ACCESO DOCENTE -->
+  <nav class="monitoring-bar" aria-label="Estado de la evaluación">
+    <div class="monitoring-inner">
+      <div class="status-group">
+        <div class="status-chip timer-global" id="global-timer-chip">
+          <span>⏱ Tiempo Total:</span>
+          <span id="global-timer-display">45:00</span>
+        </div>
+        <div class="status-chip">
+          <span>🚫 Cambios de ventana:</span>
+          <span id="tab-switches-display">0 / 3</span>
+        </div>
+        <div class="status-chip">
+          <span>📉 Penalización acumulada:</span>
+          <span id="penalty-display">-0.0</span>
+        </div>
+        <button type="button" class="btn-db-toggle" id="btn-db-toggle" aria-pressed="false" aria-controls="db-panel" title="Mostrar u ocultar el medidor de decibeles">
+          <span>🔊 Medidor dB</span><span class="db-btn-val" id="db-btn-val">-- dB</span>
+        </button>
+      </div>
+
+      <button type="button" class="btn-teacher-top" id="btn-teacher-finish">
+        <span>Finalizar examen</span>
+        <span class="sub">Uso exclusivo del docente</span>
+      </button>
+    </div>
+  </nav>
+  </div>
+
+  <!-- PANEL DEL MEDIDOR DE DECIBELES (se abre con el botón de la barra superior) -->
+  <aside class="db-panel hidden" id="db-panel" role="dialog" aria-label="Medidor de decibeles">
+    <div class="db-head"><span>🔊 Medidor de decibeles</span><button type="button" id="db-close" aria-label="Cerrar medidor">✕</button></div>
+    <div id="mic-meter-text">-- dB</div>
+    <div class="db-level" id="db-level">Micrófono apagado</div>
+    <div class="mic-bar-track db-track"><div class="mic-bar-fill" id="mic-meter-fill"></div><div class="mic-threshold-mark" title="Umbral de penalización"></div></div>
+    <div class="db-stats" id="db-stats">Sin datos todavía</div>
+    <canvas id="db-history" width="296" height="48" aria-label="Historial del último minuto"></canvas>
+    <button type="button" class="btn btn-accent" id="db-mic-btn">🎙️ Activar micrófono</button>
+    <p class="db-note">🟢 &lt;55 dB tranquilo · 🟠 55–69 atención · 🔴 ≥70 dB sostenido ~1 s = −0.1. Es una estimación relativa del micrófono, no una medición calibrada.</p>
+  </aside>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="main-container">
+
+    <!-- PANTALLA 1: BIENVENIDA, ELEMENTOS TEMÁTICOS Y CONFIGURACIÓN -->
+    <section class="card" id="screen-welcome">
+      <div class="exam-hero" aria-labelledby="exam-main-title">
+        <div class="exam-hero-kicker">⚗️ Evaluación por competencias · IV Periodo</div>
+        <h1 id="exam-main-title">Química 8° — Solubilidad y curvas de solubilidad</h1>
+        <p>Demuestra que puedes <strong>identificar soluto y solvente, explicar qué es la solubilidad, reconocer los factores que la afectan e interpretar gráficas de curvas de solubilidad para sólidos y gases</strong>.</p>
+        <div class="competency-strip" aria-label="Competencias evaluadas">
+          <div class="competency-chip"><strong>Comprender</strong>Distinguir soluto, solvente y solución, y definir la solubilidad en función de una temperatura dada.</div>
+          <div class="competency-chip"><strong>Analizar</strong>Explicar cómo influyen la temperatura, la presión, la agitación y el tamaño de partícula en el proceso de disolución.</div>
+          <div class="competency-chip"><strong>Interpretar</strong>Leer curvas de solubilidad para sólidos y gases, comparar tendencias y realizar cálculos sencillos a partir de gráficas.</div>
+        </div>
+      </div>
+      <div class="teacher-credit-banner">🔬 Docente: <span>MR. CRISTIAN AYAZO</span> &nbsp;|&nbsp; Periodo IV</div>
+      <p class="welcome-subtitle">La evaluación aborda <strong>solubilidad, soluto y solvente, factores que afectan la solubilidad y curvas de solubilidad</strong>. Incluye <strong>gráficas de solubilidad de sólidos y gases</strong> que debes interpretar con atención.</p>
+
+      <div class="assessment-map" aria-label="Mapa de la evaluación">
+        <h3>🧭 Mapa de la evaluación</h3>
+        <div class="assessment-map-grid">
+          <div class="map-item"><div class="map-n">1–3</div><div class="map-t"><strong>Solubilidad, soluto y solvente</strong><br>Conceptos básicos, reconocimiento de componentes de una solución y tipos de disolución.</div></div>
+          <div class="map-item"><div class="map-n">4–6</div><div class="map-t"><strong>Factores que afectan la solubilidad</strong><br>Temperatura, presión, agitación y tamaño de partícula en sólidos y gases.</div></div>
+          <div class="map-item"><div class="map-n">7–9</div><div class="map-t"><strong>Curvas de solubilidad de sólidos</strong><br>Lectura de gráficas, comparación de sustancias y cálculos de precipitación o disolución.</div></div>
+          <div class="map-item"><div class="map-n">10–12</div><div class="map-t"><strong>Curvas de solubilidad de gases</strong><br>Interpretación de tendencias y análisis del efecto de la temperatura en gases disueltos.</div></div>
+          <div class="map-item"><div class="map-n">13–15</div><div class="map-t"><strong>Respuesta abierta</strong><br>Explicación, argumentación científica e interpretación de gráficas.</div></div>
+        </div>
+      </div>
+
+      <div class="thematic-showcase">
+        <div class="theme-visual-card"><div class="theme-visual-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 64 64"><rect x="10" y="14" width="20" height="36" rx="4" fill="#dbeafe" stroke="#153866" stroke-width="3"/><rect x="34" y="8" width="20" height="42" rx="4" fill="#dcfce7" stroke="#15803d" stroke-width="3"/><circle cx="20" cy="40" r="4" fill="#c89d28"/><path d="M44 16 V44" stroke="#15803d" stroke-width="3"/><path d="M40 24 H48" stroke="#15803d" stroke-width="3"/></svg></div><div class="theme-visual-text"><h4>1. Soluto, solvente y solución</h4><p>Reconoce <strong>qué sustancia se disuelve, cuál está en mayor proporción y cómo se expresa la solubilidad</strong>.</p></div></div>
+        <div class="theme-visual-card"><div class="theme-visual-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 64 64"><path d="M12 42 C22 22, 42 22, 52 42" fill="none" stroke="#b45309" stroke-width="3"/><path d="M20 16 L26 8 L32 16" fill="none" stroke="#ef4444" stroke-width="3"/><circle cx="46" cy="18" r="7" fill="#eff6ff" stroke="#153866" stroke-width="3"/><text x="46" y="21" text-anchor="middle" font-size="8" font-weight="900" fill="#153866">P</text></svg></div><div class="theme-visual-text"><h4>2. Factores que afectan la solubilidad</h4><p>Analiza el efecto de <strong>temperatura, presión y naturaleza de las sustancias</strong>, y diferencia solubilidad de velocidad de disolución.</p></div></div>
+        <div class="theme-visual-card"><div class="theme-visual-icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 64 64"><path d="M8 52 H56" stroke="#081b38" stroke-width="3"/><path d="M12 52 V10" stroke="#081b38" stroke-width="3"/><path d="M16 46 C24 38, 28 30, 36 22 S48 14, 54 12" fill="none" stroke="#16a34a" stroke-width="3"/><path d="M16 18 C24 22, 32 28, 40 34 S48 42, 54 46" fill="none" stroke="#2563eb" stroke-width="3"/></svg></div><div class="theme-visual-text"><h4>3. Curvas de solubilidad</h4><p>Interpreta <strong>gráficas para sólidos y gases</strong>, compara tendencias y deduce cantidades que se disuelven o precipitan.</p></div></div>
+      </div>
+
+      <!-- Alerta para reanudar examen en caso de recarga accidental -->
+      <div class="resume-alert hidden" id="resume-banner">
+        <div>
+          <strong style="color:#92400e;">Se detectó una evaluación activa guardada en este navegador.</strong>
+          <p style="font-size:0.86rem;color:#78350f;">
+            Puedes continuar exactamente desde la pregunta donde quedaste conservando tu tiempo transcurrido y tus respuestas.
+          </p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-accent" id="btn-resume-exam">Reanudar examen</button>
+        </div>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule-item">
+          <strong>1. Distribución de Nota (5.0)</strong>
+          Las <strong>12 preguntas cerradas suman 3.7 puntos</strong> (0.31 / 0.30 pts c/u) y las <strong>3 preguntas abiertas suman 1.3 puntos</strong> (0.43 / 0.44 pts c/u) para un total de <strong>5.0</strong>.
+        </div>
+        <div class="rule-item">
+          <strong>2. Respuestas Abiertas</strong>
+          Debes desarrollar <strong>mínimo 4 ideas o líneas significativas</strong>, utilizar vocabulario del tema y responder directamente a todos los elementos solicitados.
+        </div>
+        <div class="rule-item">
+          <strong>3. Micrófono opcional</strong>
+          El examen <strong>puede iniciarse y completarse sin activar el micrófono</strong>. Si el estudiante decide autorizarlo, el navegador mostrará una estimación relativa del nivel sonoro con sensibilidad reducida al 60 % y aplicará la regla de ruido configurada.
+        </div>
+        <div class="rule-item">
+          <strong>4. Ventana del examen y supervisión</strong>
+          <strong>Está prohibido cerrar, recargar, minimizar, cambiar de pestaña o cambiar de ventana durante la evaluación.</strong> El examen debe permanecer visible y en pantalla completa. Los cambios de pestaña/ventana quedan registrados: 1.ª salida (-0.5), 2.ª salida (-1.0 adicional) y 3.ª salida finaliza la evaluación. El tiempo total es de 45 min. Cada pregunta cerrada tiene <strong>1 minuto obligatorio</strong> antes de habilitar el avance y cada pregunta abierta dispone de <strong>5 minutos máximos</strong>; al agotarse, la respuesta se guarda y el sistema avanza automáticamente.
+        </div>
+      </div>
+
+      <div style="background:#fff1f2;border:2px solid #e11d48;border-radius:12px;padding:14px 16px;margin:0 0 16px;color:#881337;font-weight:800;line-height:1.5;">
+        🚫 <strong>REGLA OBLIGATORIA:</strong> durante el examen el estudiante no puede cerrar, recargar, minimizar, cambiar de pestaña ni cambiar de ventana. Cualquier salida queda registrada por el sistema.
+      </div>
+
+      <div class="academic-integrity-note">
+        <span aria-hidden="true">🧠</span>
+        <div><strong>Recomendación:</strong> responde a partir de tu comprensión. En selección múltiple busca primero la evidencia científica del contexto; en preguntas abiertas explica el <em>porqué</em>, no solo escribas definiciones aisladas.</div>
+      </div>
+<!-- ÚNICO CAMPO OBLIGATORIO: NOMBRE COMPLETO DEL ESTUDIANTE -->
+      <div class="form-single-box">
+        <label for="student-name">Nombre y Apellido Completo del Estudiante *</label>
+        <input
+          type="text"
+          id="student-name"
+          class="form-control"
+          placeholder="Escribe tu nombre y apellido completos (Ej. Mariana Sofía Hernández Rojas)"
+          autocomplete="name"
+        />
+        <span id="name-validation-msg" class="name-validation-hint">
+          ⚠️ Requisito obligatorio: Escribe tu nombre completo (mínimo un nombre y un apellido).
+        </span>
+      </div>
+
+      <!-- PANEL OPCIONAL DE ACTIVACIÓN DEL MICRÓFONO -->
+      <div class="mic-setup-panel" id="mic-setup-box">
+        <div>
+          <strong style="color:var(--primary);display:block;">Indicador de nivel sonoro <span style="color:var(--muted);font-weight:700;">(opcional)</span></strong>
+          <span id="welcome-mic-status" style="font-size:0.86rem;color:var(--muted);font-weight:600;">
+            Estado: Micrófono no activado. Puedes iniciar el examen normalmente o autorizarlo si deseas usar el medidor de ruido.
+          </span>
+        </div>
+        <button type="button" class="btn btn-accent" id="btn-activate-mic">🎙️ Activar medidor de ruido (opcional)</button>
+      </div>
+
+      <div class="start-action-row">
+        <span class="start-readiness-hint" id="start-readiness-hint">
+          Completa tu nombre y podrás iniciar. El micrófono es opcional.
+        </span>
+        <button type="button" class="btn btn-primary" id="btn-start-exam" disabled>
+          Iniciar Evaluación en Pantalla Completa →
+        </button>
+      </div>
+
+      <p class="disclaimer-note">
+        Nota técnica: Durante la evaluación se limitan algunas funciones del navegador para reducir distracciones y favorecer la integridad académica. Estas medidas no constituyen un sistema antifraude infalible. El micrófono es opcional; si se activa, el indicador de ruido usa la amplitud captada para generar una estimación relativa y no sustituye un sonómetro profesional calibrado.
+      </p>
+    </section>
+
+    <!-- PANTALLA 2: DESARROLLO DEL EXAMEN -->
+    <section class="card hidden" id="screen-exam">
+      <div class="progress-meta">
+        <span id="progress-label">Progreso: 1 de 15</span>
+        <span id="progress-percent">7%</span>
+      </div>
+      <div class="progress-shell" role="progressbar" aria-label="Progreso de la evaluación" aria-valuemin="0" aria-valuemax="100" aria-valuenow="7">
+        <div class="progress-fill" id="exam-progress-fill"></div>
+      </div>
+
+      <div class="question-header-bar">
+        <div class="badges-left">
+          <span class="badge-phase" id="phase-badge">Parte I: Selección Múltiple</span>
+          <span class="badge-topic" id="question-topic-badge">Tema</span>
+          <span class="badge-points" id="question-points-badge">Valor: 0.31 pts</span>
+          <strong id="question-counter" style="color:var(--primary);font-size:0.95rem;">Pregunta 1 de 12</strong>
+        </div>
+      </div>
+
+      <!-- IMAGEN / LÁMINA CIENTÍFICA ESPECÍFICA QUE ENRIQUECE EL CONTEXTO DE CADA PREGUNTA -->
+      <div class="context-illustration-card" id="question-visual-aid">
+        <div class="context-illustration-header">
+          <span class="context-illustration-title" id="question-visual-title">🔬 Figura de apoyo experimental</span>
+          <span class="context-illustration-sub" id="question-visual-sub">Mr. Cristian Ayazo</span>
+        </div>
+        <div class="context-illustration-svg-wrap" id="question-visual-svg"></div>
+      </div>
+
+      <div class="context-box" id="question-context"></div>
+      <div class="question-stem" id="question-stem"></div>
+
+      <div class="answer-monitor-strip" id="answer-monitor-strip">
+        <div class="per-question-timer answer-timer-sticky" id="question-timer-box">
+          <span id="question-timer-label">⏳ Tiempo obligatorio:</span>
+          <span id="question-timer-display">01:00</span>
+        </div>
+        <div class="mini-progress-wrap">
+          <div class="progress-meta"><span>Avance de esta evaluación</span><span id="inline-progress-percent">7%</span></div>
+          <div class="progress-shell inline-progress-shell" aria-hidden="true"><div class="progress-fill" id="inline-progress-fill"></div></div>
+        </div>
+      </div>
+
+      <!-- Contenedor de opciones para preguntas cerradas (1 a 12) -->
+      <div class="options-list" id="options-container" role="radiogroup" aria-labelledby="question-stem"></div>
+
+      <!-- Contenedor de respuesta para preguntas abiertas (13 a 15) -->
+      <div class="hidden" id="open-answer-container">
+        <div class="open-instructions">
+          <strong>Instrucción para pregunta abierta:</strong> Construye una explicación de <strong>al menos 4 ideas o líneas significativas</strong>. Responde todos los elementos de la pregunta, emplea conceptos de solubilidad, soluto, solvente, factores de disolución y lectura de gráficas; incluye cálculos y unidades cuando la pregunta lo solicite. La validación automática considera extensión, diversidad del texto y coincidencia con conceptos clave; por ello, repetir palabras o escribir frases sin relación con el tema no otorga el puntaje.
+        </div>
+        <textarea
+          id="open-textarea"
+          class="open-textarea"
+          placeholder="Explica tu respuesta con tus propias palabras. Incluye conceptos del tema, justificación y ejemplos cuando correspondan. Escribe mínimo 4 ideas o líneas significativas..."
+        ></textarea>
+        <div class="open-counters">
+          <span class="counter-pill" id="sig-lines-count">Líneas significativas: 0 / 4</span>
+          <span class="counter-pill" id="words-count">Palabras totales: 0</span>
+          <span class="counter-pill" id="coherence-badge">Coherencia temática: Pendiente</span>
+          <span id="open-validation-msg" style="color:var(--warning);">Escribe al menos 4 líneas significativas coherentes con la pregunta.</span>
+        </div>
+      </div>
+
+      <div class="question-footer">
+        <div class="min-time-msg" id="min-time-warning">
+          Debes completar el tiempo mínimo antes de continuar
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
+          <span id="closed-progress-teacher" class="counter-pill" style="background:#fff7ed;color:#9a3412;border:1px solid #fdba74;font-weight:800;align-self:center;">Progreso Parte I: 0 de 12 respondidas</span>
+          <button type="button" class="btn btn-closed-teacher hidden" id="btn-finish-closed-teacher" title="Uso exclusivo del docente. Contraseña requerida: 0829">🔐 Cerrar Parte I y pasar a preguntas abiertas — Uso docente</button>
+          <button type="button" class="btn btn-teacher-advance" id="btn-teacher-next" title="Permite al docente avanzar sin esperar el temporizador. Contraseña: 0829">🔐 Avanzar pregunta — Docente</button>
+          <button type="button" class="btn btn-primary" id="btn-next-question" disabled>Siguiente pregunta →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANTALLA 3: RESULTADOS FINALES Y VERIFICACIÓN QR -->
+    <section class="card hidden" id="screen-results">
+      <h2 class="welcome-title">Resultados del Examen Parcial — Química 8°</h2>
+      <p class="welcome-subtitle" id="res-subtitle-info">
+        Informe oficial de evaluación por competencias — Docente: <strong>Mr. Cristian Ayazo</strong> (Código: F-GA2-004 · Versión: 2).
+      </p>
+
+      <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
+        <p><strong>Nombre completo del estudiante:</strong> <span id="res-student-name" style="font-weight:700;color:var(--primary);"></span></p>
+        <p><strong>Docente de Química 8°:</strong> <span style="font-weight:700;color:var(--primary-light);">Mr. Cristian Ayazo</span></p>
+        <p><strong>Motivo de finalización:</strong> <span id="res-finish-reason" style="font-weight:700;color:var(--primary);"></span></p>
+      </div>
+
+      <div class="results-grid">
+        <div class="stat-card">
+          <div class="label">Correctas Selección Múltiple</div>
+          <div class="value" id="res-correct-count">0 / 12</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Progreso Parte I — Respondidas</div>
+          <div class="value" id="res-closed-answered">0 / 12</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Puntaje Selección Múltiple (Máx 3.70)</div>
+          <div class="value" id="res-closed-score">0.00 / 3.70</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Puntaje Preguntas Abiertas (Máx 1.30)*</div>
+          <div class="value" id="res-open-score">0.00 / 1.30</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Penalización por cambio de pestaña/ventana</div>
+          <div class="value" style="color:var(--danger);" id="res-tab-penalty">-0.00</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Penalización por ruido (solo si se activó el micrófono)</div>
+          <div class="value" style="color:var(--danger);" id="res-noise-penalty">-0.00</div>
+        </div>
+        <div class="stat-card final-grade-card">
+          <div class="label">Nota Final del Estudiante (0.0 - 5.0)</div>
+          <div class="value" id="res-final-grade">0.00</div>
+        </div>
+      </div>
+
+      <p class="disclaimer-note">
+        *Nota pedagógica: La sumatoria de las 12 preguntas cerradas equivale a <strong>3.70 puntos</strong> y las 3 preguntas abiertas equivalen a <strong>1.30 puntos</strong> (Total = <strong>5.00</strong>). Las respuestas abiertas se someten a una <strong>validación automática aproximada</strong> basada en extensión, diversidad léxica y presencia de conceptos relacionados con la pregunta; esta revisión no equivale a una valoración docente completa. El micrófono es opcional. Si se activó, el indicador de ruido se calcula a partir de la amplitud relativa captada y no corresponde a una medición acústica profesional calibrada.
+      </p>
+
+      <!-- SECCIÓN QR DE VERIFICACIÓN CON REPORTE COMPLETO -->
+      <div class="qr-verification-section">
+        <div class="qr-box">
+          <img id="qr-display-img" alt="Código QR de verificación con informe completo" />
+          <span style="font-size:0.75rem;color:var(--muted);margin-top:6px;font-weight:700;">Escanea con la cámara para ver el informe</span>
+        </div>
+        <div class="qr-info">
+          <h3>Código QR de verificación</h3>
+          <p style="font-size:0.88rem;color:var(--muted);">
+            Al escanear este código QR se muestra un <strong>resumen de verificación</strong> con los datos principales y la nota del estudiante. El PDF conserva el informe detallado de respuestas y resultados:
+          </p>
+          <div class="verification-hash-box" id="verification-code-text">VERIF-000000</div>
+          <div class="qr-report-preview" id="qr-report-preview-box"></div>
+          <div>
+            <button type="button" class="btn btn-primary" id="btn-download-pdf">
+              📥 Descargar Informe PDF (Con Nota, Banner y QR)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Renderizador QR fuera de pantalla pero activo en el DOM -->
+  <div id="qr-temp-holder" class="offscreen-qr-renderer"></div>
+
+  <!-- MODAL 1: BLOQUEO POR SALIDA DE PANTALLA COMPLETA -->
+  <div class="modal-backdrop hidden" id="modal-fullscreen">
+    <div class="modal-card danger">
+      <h3>🔒 Pantalla Completa Requerida</h3>
+      <p style="font-weight:700;font-size:1.05rem;color:var(--danger);">
+        Está prohibido abandonar la ventana del examen
+      </p>
+      <p>
+        La evaluación de Química 8° debe permanecer visible y en pantalla completa. No cierres, minimices ni cambies de pestaña o ventana. Para continuar, regresa inmediatamente a pantalla completa.
+      </p>
+      <button type="button" class="btn btn-primary" id="btn-return-fullscreen">
+        Volver a pantalla completa
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 2: INFORMACIÓN DEL MICRÓFONO OPCIONAL -->
+  <div class="modal-backdrop hidden" id="modal-mic-lost">
+    <div class="modal-card">
+      <h3>🎙️ Micrófono opcional</h3>
+      <p>El medidor de ruido dejó de estar disponible. Esto <strong>no bloquea ni detiene el examen</strong>. Puedes continuar normalmente o intentar activarlo de nuevo.</p>
+      <button type="button" class="btn btn-accent" id="btn-restore-mic">Intentar reactivar medidor</button>
+    </div>
+  </div>
+
+  <!-- MODAL 3: ADVERTENCIAS GENERALES (CAMBIO DE PESTAÑA / RUIDO dB / TIEMPO ABIERTA) -->
+  <div class="modal-backdrop hidden" id="modal-alert">
+    <div class="modal-card danger">
+      <h3 id="modal-alert-title">⚠️ Advertencia de Supervisión</h3>
+      <p id="modal-alert-body"></p>
+      <button type="button" class="btn btn-primary" id="btn-close-alert">Entendido</button>
+    </div>
+  </div>
+
+
+  <div class="modal-backdrop hidden" id="modal-finish-closed">
+    <div class="modal-card">
+      <h3>🔐 Cerrar Parte I: preguntas cerradas</h3>
+      <p><strong>Uso exclusivo del docente.</strong> Esta acción <strong>NO finaliza el examen</strong>. Cierra únicamente la Parte I en el punto actual y pasa <strong>de inmediato</strong> a la primera pregunta abierta. Las respuestas cerradas registradas hasta este momento conservarán su puntaje y las no respondidas quedarán con 0 puntos.</p>
+      <div id="closed-progress-modal" style="background:#fff7ed;border:1.5px solid #fdba74;color:#9a3412;border-radius:10px;padding:10px 12px;margin:0 0 14px;font-weight:800;">Progreso Parte I: 0 de 12 respondidas</div>
+      <div class="form-group" style="text-align:left;margin-bottom:14px;">
+        <label for="closed-teacher-password-input">Contraseña docente</label>
+        <input type="password" id="closed-teacher-password-input" class="form-control" placeholder="Ingrese la contraseña..." />
+        <p id="closed-teacher-error-msg" class="hidden" style="color:var(--danger);font-weight:700;font-size:.86rem;margin-top:6px;">Contraseña incorrecta</p>
+      </div>
+      <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+        <button type="button" class="btn" style="background:#e2e8f0;color:#1e293b;" id="btn-cancel-finish-closed">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btn-confirm-finish-closed">Cerrar preguntas cerradas y abrir Parte II</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AVANCE MANUAL DE PREGUNTA — USO EXCLUSIVO DEL DOCENTE -->
+  <div class="modal-backdrop hidden" id="modal-teacher-next">
+    <div class="modal-card">
+      <h3>🔐 Avanzar pregunta — Uso docente</h3>
+      <p>Esta acción permite avanzar a la siguiente pregunta <strong>sin exigir el tiempo mínimo ni una respuesta del estudiante</strong>. La respuesta actual, si existe, se conservará.</p>
+      <div class="form-group" style="text-align:left;margin-bottom:14px;">
+        <label for="teacher-next-password-input">Contraseña docente</label>
+        <input type="password" id="teacher-next-password-input" class="form-control" placeholder="Ingrese la contraseña..." inputmode="numeric" autocomplete="off" />
+        <p id="teacher-next-error-msg" class="hidden" style="color:var(--danger);font-weight:700;font-size:.86rem;margin-top:6px;">Contraseña incorrecta</p>
+      </div>
+      <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+        <button type="button" class="btn" style="background:#e2e8f0;color:#1e293b;" id="btn-cancel-teacher-next">Cancelar</button>
+        <button type="button" class="btn btn-teacher-advance" id="btn-confirm-teacher-next">Avanzar ahora →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: USO EXCLUSIVO DEL DOCENTE -->
+  <div class="modal-backdrop hidden" id="modal-teacher">
+    <div class="modal-card">
+      <h3>🔐 Finalizar examen — Uso exclusivo del docente</h3>
+      <p>
+        Docente <strong>Mr. Cristian Ayazo</strong>: Ingrese la contraseña docente para finalizar inmediatamente la evaluación, calcular la nota con el avance actual y descargar el PDF.
+      </p>
+      <div class="form-group" style="text-align:left;margin-bottom:14px;">
+        <label for="teacher-password-input">Contraseña docente</label>
+        <input type="password" id="teacher-password-input" class="form-control" placeholder="Ingrese la contraseña..." />
+        <p id="teacher-error-msg" class="hidden" style="color:var(--danger);font-weight:700;font-size:0.86rem;margin-top:6px;">
+          Contraseña incorrecta
+        </p>
+      </div>
+      <div style="display:flex;justify-content:center;gap:10px;">
+        <button type="button" class="btn" style="background:#e2e8f0;color:#1e293b;" id="btn-cancel-teacher">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btn-confirm-teacher">Finalizar Evaluación</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*************************************************************************
+     * CONFIGURACIÓN CENTRALIZADA DE LA EVALUACIÓN (GRADO 8° - QUÍMICA)
+     * Sumatoria Preguntas Cerradas = 3.70 | Sumatoria Preguntas Abiertas = 1.30
+     * Nota Máxima Total = 5.00
+     *************************************************************************/
+    const CONFIG = {
+      institution: "GIMNASIO CRISTIANO FARO DE LUZ",
+      institutionSub: "MANANTIAL DE DIOS - THE LIGHTHOUSE SCHOOL (CÓDIGO: F-GA2-004 | VERSIÓN: 2)",
+      teacherName: "MR. CRISTIAN AYAZO",
+      subject: "QUIMICA",
+      subjectDisplay: "QUÍMICA",
+      examName: "EXAMEN PARCIAL - IV PERIODO",
+      examTopics: "SOLUBILIDAD, SOLUTO Y SOLVENTE, FACTORES QUE AFECTAN LA SOLUBILIDAD Y CURVAS DE SOLUBILIDAD",
+      period: "4",
+      grade: "8",
+      totalTimeSeconds: 45 * 60,        // 45 minutos (2700 s)
+      minClosedTimeSeconds: 60,         // 1 minuto mínimo por pregunta cerrada
+      maxOpenTimeSeconds: 5 * 60,       // 5 minutos máximo por pregunta abierta
+      minSignificantLines: 4,           // Mínimo 4 líneas significativas para validar como correcta
+      minWordsPerLine: 5,               // Aproximadamente 5 palabras por línea significativa
+      scaleMin: 0.0,
+      scaleMax: 5.0,
+      closedWeight: 3.7,
+      openWeight: 1.3,
+      passingGrade: 3.0,
+      teacherPassword: "0829",
+      pdfPassword: "0829",
+      micThresholdDb: 70,
+      micSensitivityScale: 0.60,
+      micSustainMs: 1000,
+      micCooldownMs: 5000,
+      micPenaltyValue: 0.1,
+      tabPenalties: [0.5, 1.0],
+      storageKey: "GCFL_QUIMICA_G8_SOLUBILIDAD_P4_STATE_V1"
+    };
+
+    /*************************************************************************
+     * DIBUJO DEL BANNER INSTITUCIONAL EN CANVAS COMPATIBLE CON CUALQUIER NAVEGADOR
+     *************************************************************************/
+    let bannerForPdfJpeg = null;
+    let bannerRatio = 326 / 1830;
+
+    function drawSafeRoundedRect(ctx, x, y, width, height, radius) {
+      const r = Math.min(radius, width / 2, height / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + width - r, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+      ctx.lineTo(x + width, y + height - r);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+      ctx.lineTo(x + r, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function renderOfficialBannerCanvas() {
+      const c = document.createElement("canvas");
+      c.width = 1200;
+      c.height = 216;
+      const ctx = c.getContext("2d");
+
+      const bgGrad = ctx.createLinearGradient(0, 0, 1200, 0);
+      bgGrad.addColorStop(0, "#ffffff");
+      bgGrad.addColorStop(0.5, "#f1f5f9");
+      bgGrad.addColorStop(1, "#ffffff");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1200, 216);
+
+      const goldGrad = ctx.createLinearGradient(0, 0, 1200, 216);
+      goldGrad.addColorStop(0, "#f6e27a");
+      goldGrad.addColorStop(0.5, "#c89d28");
+      goldGrad.addColorStop(1, "#9c7311");
+
+      const navyGrad = ctx.createLinearGradient(0, 0, 0, 216);
+      navyGrad.addColorStop(0, "#173766");
+      navyGrad.addColorStop(1, "#071630");
+
+      // Franjas diagonales izquierdas
+      ctx.fillStyle = goldGrad;
+      ctx.beginPath();
+      ctx.moveTo(315, 0); ctx.lineTo(336, 0); ctx.lineTo(266, 216); ctx.lineTo(245, 216);
+      ctx.closePath(); ctx.fill();
+
+      ctx.fillStyle = navyGrad;
+      ctx.beginPath();
+      ctx.moveTo(336, 0); ctx.lineTo(378, 0); ctx.lineTo(308, 216); ctx.lineTo(266, 216);
+      ctx.closePath(); ctx.fill();
+
+      // Franjas diagonales derechas
+      ctx.fillStyle = navyGrad;
+      ctx.beginPath();
+      ctx.moveTo(945, 0); ctx.lineTo(987, 0); ctx.lineTo(917, 216); ctx.lineTo(875, 216);
+      ctx.closePath(); ctx.fill();
+
+      ctx.fillStyle = goldGrad;
+      ctx.beginPath();
+      ctx.moveTo(987, 0); ctx.lineTo(1006, 0); ctx.lineTo(936, 216); ctx.lineTo(917, 216);
+      ctx.closePath(); ctx.fill();
+
+      // Logo Izquierdo: MANANTIAL DE DIOS ("M")
+      ctx.save();
+      ctx.translate(55, 28);
+      ctx.fillStyle = "#071630";
+      ctx.beginPath();
+      ctx.moveTo(15, 112); ctx.lineTo(15, 16); ctx.lineTo(65, 48); ctx.lineTo(115, 16);
+      ctx.lineTo(115, 112); ctx.lineTo(96, 112); ctx.lineTo(96, 50); ctx.lineTo(65, 70);
+      ctx.lineTo(34, 50); ctx.lineTo(34, 112); ctx.closePath();
+      ctx.fill();
+
+      ctx.strokeStyle = "#071630";
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.moveTo(58, 88); ctx.quadraticCurveTo(72, 78, 86, 88); ctx.quadraticCurveTo(100, 98, 112, 88);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(58, 99); ctx.quadraticCurveTo(72, 89, 86, 99); ctx.quadraticCurveTo(100, 109, 112, 99);
+      ctx.stroke();
+
+      ctx.fillStyle = "#071630";
+      ctx.font = "bold 17px 'Segoe UI', Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("MANANTIAL DE DIOS", 65, 152);
+      ctx.restore();
+
+      // Textos Centrales Oficiales
+      ctx.fillStyle = "#071630";
+      ctx.textAlign = "center";
+      ctx.font = "800 37px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText("EXAMEN PARCIAL - IV PERIODO", 625, 64);
+      ctx.font = "800 31px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText("QUÍMICA 8°", 625, 114);
+
+      // Cápsula central temática de Química 8°
+      ctx.fillStyle = navyGrad;
+      ctx.strokeStyle = goldGrad;
+      ctx.lineWidth = 5;
+      drawSafeRoundedRect(ctx, 390, 134, 470, 62, 16);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 25px 'Segoe UI', Arial, sans-serif";
+      ctx.font = "bold 22px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText("SOLUBILIDAD · CURVAS DE SOLUBILIDAD", 625, 178);
+
+      // Escudo Derecho: THE LIGHTHOUSE SCHOOL + CÓDIGO F-GA2-004 VERSIÓN 2
+      ctx.save();
+      ctx.translate(1015, 12);
+      ctx.fillStyle = "#173766";
+      ctx.strokeStyle = "#071630";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(65, 6); ctx.lineTo(118, 30); ctx.lineTo(118, 90);
+      ctx.quadraticCurveTo(118, 130, 65, 152);
+      ctx.quadraticCurveTo(12, 130, 12, 90);
+      ctx.lineTo(12, 30); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = "#eab308";
+      ctx.beginPath();
+      ctx.moveTo(65, 10); ctx.lineTo(114, 32); ctx.lineTo(114, 90);
+      ctx.quadraticCurveTo(114, 126, 65, 147); ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(80, 36, 14, 42);
+      ctx.fillStyle = "#dc2626";
+      ctx.fillRect(80, 48, 14, 8);
+      ctx.fillRect(80, 64, 14, 8);
+
+      ctx.fillStyle = "#f8fafc";
+      ctx.strokeStyle = "#94a3b8";
+      ctx.lineWidth = 1.5;
+      ctx.fillRect(8, 76, 114, 24);
+      ctx.strokeRect(8, 76, 114, 24);
+      ctx.fillStyle = "#071630";
+      ctx.font = "bold 12px 'Segoe UI', Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("THE LIGHTHOUSE", 65, 92);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 15px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText("CÓDIGO: F-GA2-004", 65, 174);
+      ctx.fillText("VERSIÓN: 2", 65, 193);
+      ctx.restore();
+
+      return c.toDataURL("image/jpeg", 0.96);
+    }
+
+    /*************************************************************************
+     * BANCO DE 15 ILUSTRACIONES CIENTÍFICAS QUE ENRIQUECEN EL CONTEXTO
+     * (1 lámina ilustrada exclusiva por cada una de las 15 preguntas)
+     *************************************************************************/
+    const QUESTION_ILLUSTRATIONS = (() => {
+      const infoCard = (title, left, right, symbol, footer) => ({
+        title,
+        svg: `<svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="712" height="152" rx="16" fill="#f8fafc" stroke="#cbd5e1"/><rect x="95" y="38" width="205" height="70" rx="14" fill="#dbeafe" stroke="#153866" stroke-width="3"/><rect x="420" y="38" width="205" height="70" rx="14" fill="#dcfce7" stroke="#15803d" stroke-width="3"/><text x="198" y="80" text-anchor="middle" font-size="18" font-weight="900" fill="#081b38">${left}</text><text x="522" y="80" text-anchor="middle" font-size="18" font-weight="900" fill="#166534">${right}</text><text x="360" y="83" text-anchor="middle" font-size="28" font-weight="900" fill="#b45309">${symbol}</text><text x="360" y="137" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">${footer}</text></svg>`
+      });
+      const solidsGraph = (title, footer) => ({
+        title,
+        svg: `<svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="712" height="152" rx="16" fill="#f8fafc" stroke="#cbd5e1"/><text x="360" y="22" text-anchor="middle" font-size="16" font-weight="900" fill="#081b38">Curva de solubilidad de sólidos (g de soluto / 100 g de agua)</text><line x1="72" y1="126" x2="320" y2="126" stroke="#081b38" stroke-width="3"/><line x1="72" y1="126" x2="72" y2="28" stroke="#081b38" stroke-width="3"/><text x="196" y="148" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">Temperatura (°C)</text><text x="26" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="#475569" transform="rotate(-90 26 77)">Solubilidad</text><polyline points="92,108 142,100 192,84 242,64 292,40" fill="none" stroke="#2563eb" stroke-width="4"/><polyline points="92,89 142,82 192,76 242,72 292,67" fill="none" stroke="#16a34a" stroke-width="4"/><circle cx="142" cy="100" r="4" fill="#2563eb"/><circle cx="192" cy="84" r="4" fill="#2563eb"/><circle cx="242" cy="64" r="4" fill="#2563eb"/><circle cx="292" cy="40" r="4" fill="#2563eb"/><circle cx="142" cy="82" r="4" fill="#16a34a"/><circle cx="192" cy="76" r="4" fill="#16a34a"/><circle cx="242" cy="72" r="4" fill="#16a34a"/><circle cx="292" cy="67" r="4" fill="#16a34a"/><text x="300" y="30" font-size="12" font-weight="800" fill="#2563eb">Sólido X</text><text x="300" y="68" font-size="12" font-weight="800" fill="#16a34a">Sólido Y</text><text x="142" y="140" font-size="11" fill="#475569">20</text><text x="192" y="140" font-size="11" fill="#475569">40</text><text x="242" y="140" font-size="11" fill="#475569">60</text><text x="292" y="140" font-size="11" fill="#475569">80</text><text x="56" y="116" font-size="11" fill="#475569">20</text><text x="50" y="100" font-size="11" fill="#475569">40</text><text x="50" y="84" font-size="11" fill="#475569">60</text><text x="50" y="68" font-size="11" fill="#475569">80</text><text x="44" y="52" font-size="11" fill="#475569">100</text><text x="40" y="36" font-size="11" fill="#475569">120</text><rect x="372" y="30" width="296" height="90" rx="14" fill="#ffffff" stroke="#bfdbfe" stroke-width="2"/><text x="520" y="51" text-anchor="middle" font-size="14" font-weight="900" fill="#1e40af">Valores de referencia del sólido X</text><text x="392" y="72" font-size="13" font-weight="700" fill="#081b38">20 °C → 35 g</text><text x="392" y="90" font-size="13" font-weight="700" fill="#081b38">40 °C → 55 g</text><text x="392" y="108" font-size="13" font-weight="700" fill="#081b38">60 °C → 80 g</text><text x="560" y="72" font-size="13" font-weight="700" fill="#166534">Sólido Y a 40 °C → 65 g</text><text x="560" y="90" font-size="13" font-weight="700" fill="#166534">Sólido Y a 60 °C → 70 g</text><text x="520" y="139" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">${footer}</text></svg>`
+      });
+      const gasGraph = (title, footer) => ({
+        title,
+        svg: `<svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="712" height="152" rx="16" fill="#f8fafc" stroke="#cbd5e1"/><text x="360" y="22" text-anchor="middle" font-size="16" font-weight="900" fill="#081b38">Curva de solubilidad de gases (g de gas / L de agua)</text><line x1="72" y1="126" x2="320" y2="126" stroke="#081b38" stroke-width="3"/><line x1="72" y1="126" x2="72" y2="28" stroke="#081b38" stroke-width="3"/><text x="196" y="148" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">Temperatura (°C)</text><text x="26" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="#475569" transform="rotate(-90 26 77)">Solubilidad</text><polyline points="92,52 142,68 192,88 242,100 292,108" fill="none" stroke="#2563eb" stroke-width="4"/><polyline points="92,65 142,80 192,94 242,104 292,110" fill="none" stroke="#16a34a" stroke-width="4"/><circle cx="142" cy="68" r="4" fill="#2563eb"/><circle cx="192" cy="88" r="4" fill="#2563eb"/><circle cx="242" cy="100" r="4" fill="#2563eb"/><circle cx="292" cy="108" r="4" fill="#2563eb"/><text x="300" y="104" font-size="12" font-weight="800" fill="#2563eb">Gas G</text><text x="300" y="121" font-size="12" font-weight="800" fill="#16a34a">Gas H</text><text x="142" y="140" font-size="11" fill="#475569">20</text><text x="192" y="140" font-size="11" fill="#475569">40</text><text x="242" y="140" font-size="11" fill="#475569">60</text><text x="292" y="140" font-size="11" fill="#475569">80</text><text x="54" y="114" font-size="11" fill="#475569">1,0</text><text x="54" y="98" font-size="11" fill="#475569">2,0</text><text x="54" y="82" font-size="11" fill="#475569">3,0</text><text x="54" y="66" font-size="11" fill="#475569">4,0</text><rect x="372" y="30" width="296" height="90" rx="14" fill="#ffffff" stroke="#bbf7d0" stroke-width="2"/><text x="520" y="51" text-anchor="middle" font-size="14" font-weight="900" fill="#166534">Valores de referencia del gas G</text><text x="392" y="72" font-size="13" font-weight="700" fill="#081b38">20 °C → 3,6 g/L</text><text x="392" y="90" font-size="13" font-weight="700" fill="#081b38">40 °C → 2,4 g/L</text><text x="392" y="108" font-size="13" font-weight="700" fill="#081b38">60 °C → 1,6 g/L</text><text x="560" y="72" font-size="13" font-weight="700" fill="#166534">Mayor T → menor solubilidad</text><text x="560" y="90" font-size="13" font-weight="700" fill="#166534">Mayor presión → mayor disolución</text><text x="520" y="139" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">${footer}</text></svg>`
+      });
+      const dualGraph = (title) => ({
+        title,
+        svg: `<svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="712" height="152" rx="16" fill="#f8fafc" stroke="#cbd5e1"/><text x="180" y="20" text-anchor="middle" font-size="15" font-weight="900" fill="#081b38">Sólidos</text><text x="540" y="20" text-anchor="middle" font-size="15" font-weight="900" fill="#081b38">Gases</text><line x1="62" y1="126" x2="300" y2="126" stroke="#081b38" stroke-width="3"/><line x1="62" y1="126" x2="62" y2="34" stroke="#081b38" stroke-width="3"/><polyline points="82,114 132,101 182,84 232,57 282,28" fill="none" stroke="#2563eb" stroke-width="4"/><line x1="422" y1="126" x2="660" y2="126" stroke="#081b38" stroke-width="3"/><line x1="422" y1="126" x2="422" y2="34" stroke="#081b38" stroke-width="3"/><polyline points="442,46 492,62 542,82 592,100 642,112" fill="none" stroke="#16a34a" stroke-width="4"/><text x="180" y="147" text-anchor="middle" font-size="12" fill="#475569">En la mayoría de sólidos, la solubilidad aumenta con T.</text><text x="540" y="147" text-anchor="middle" font-size="12" fill="#475569">En muchos gases, la solubilidad disminuye con T.</text></svg>`
+      });
+      return {
+        1: infoCard('Concepto de solubilidad', 'Soluto', 'Solvente', '→', 'La solubilidad se define para una temperatura determinada.'),
+        2: infoCard('Componentes de una solución', 'Solvente', 'Mayor proporción', '↔', 'El solvente es el medio que disuelve al soluto.'),
+        3: infoCard('Identificación del soluto', 'Sustancia disuelta', 'Soluto', '✓', 'El soluto suele estar en menor proporción dentro de la solución.'),
+        4: infoCard('Temperatura y sólidos', 'Temperatura ↑', 'Solubilidad de sólido ↑', '→', 'En muchos sólidos, el aumento de temperatura favorece la disolución.'),
+        5: infoCard('Temperatura y gases', 'Temperatura ↑', 'Gas disuelto ↓', '→', 'Las bebidas gaseosas pierden gas al calentarse.'),
+        6: infoCard('Velocidad de disolución', 'Agitar / triturar', 'Disolver más rápido', '→', 'La agitación y el tamaño de partícula afectan la rapidez del proceso.'),
+        7: solidsGraph('Curva de solubilidad de sólidos', 'Compara cuál curva está más alta a la misma temperatura.'),
+        8: solidsGraph('Curva de solubilidad de sólidos', 'Si aumenta la temperatura, una solución puede pasar de saturada a insaturada.'),
+        9: solidsGraph('Curva de solubilidad de sólidos', 'Al enfriar una solución saturada puede precipitar parte del soluto.'),
+        10: gasGraph('Curva de solubilidad de gases', 'Observa cómo cambia la cantidad de gas disuelto al subir la temperatura.'),
+        11: gasGraph('Curva de solubilidad de gases', 'Las bebidas gaseosas retienen mejor el gas en frío y bajo presión.'),
+        12: gasGraph('Curva de solubilidad de gases', 'Usa los datos de la gráfica para calcular diferencias de solubilidad.'),
+        13: infoCard('Pregunta abierta: solubilidad', 'Soluto', 'Solvente', '↔', 'Explica con ejemplos qué es una solución y cómo se expresa la solubilidad.'),
+        14: infoCard('Pregunta abierta: factores', 'Sólidos', 'Gases', '↔', 'Compara el efecto de la temperatura, la presión y la agitación.'),
+        15: dualGraph('Pregunta abierta: interpretación de curvas')
+      };
+    })();
+
+    /*************************************************************************
+     * BANCO DE 12 PREGUNTAS CERRADAS (QUÍMICA 8° - PRUEBA SABER)
+     * Sumatoria exacta = 3.70 puntos:
+     *  - Preguntas 1 a 10: 0.31 puntos cada una (3.10 puntos)
+     *  - Preguntas 11 a 12: 0.30 puntos cada una (0.60 puntos)
+     *  Total Selección Múltiple = 3.70 puntos.
+     * Clave equilibrada (3 A, 3 B, 3 C, 3 D) sin patrones A-B-C-D ni >2 consecutivas:
+     *  P1:B, P2:D, P3:A, P4:C, P5:C, P6:A, P7:D, P8:B, P9:A, P10:D, P11:B, P12:C
+     *************************************************************************/
+    const CLOSED_QUESTIONS = [
+      {
+        id: 1, points: 0.31, topic: "Solubilidad",
+        context: "Durante una práctica de laboratorio, los estudiantes de grado octavo preparan varios vasos con 100 g de agua a la misma temperatura y agregan cantidades crecientes de una sal soluble. En los primeros vasos toda la sal desaparece visualmente después de agitar, pero llega un momento en que una pequeña cantidad permanece en el fondo aunque se continúe mezclando. Mr. Cristian Ayazo explica que existe un límite para la cantidad de una sustancia que puede incorporarse de manera homogénea al solvente y que dicho límite cambia cuando varía la temperatura.",
+        stem: "¿Cuál de las siguientes afirmaciones define correctamente la solubilidad de una sustancia?",
+        options: {A:"Es la cantidad total de solvente presente en una mezcla.", B:"Es la cantidad máxima de soluto que puede disolverse en una cantidad determinada de solvente a una temperatura dada.", C:"Es la rapidez con la que una sustancia desaparece al agitarla.", D:"Es la masa del sólido que queda en el fondo del recipiente."},
+        correct: "B"
+      },
+      {
+        id: 2, points: 0.31, topic: "Soluto y Solvente",
+        context: "En el laboratorio escolar se prepara una bebida modelo para estudiar soluciones. En un vaso se colocan 200 mL de agua y luego se añaden 20 g de azúcar. Después de mezclar durante varios segundos, los cristales dejan de observarse y se obtiene una mezcla homogénea. El grupo compara las cantidades de cada componente, identifica cuál sustancia está presente en mayor proporción y analiza cuál de ellas funciona como el medio en el que las partículas del otro componente quedan distribuidas uniformemente.",
+        stem: "En esta solución, ¿cuál sustancia actúa como solvente?",
+        options: {A:"El azúcar, porque se añadió después del agua.", B:"La solución completa, porque ya es homogénea.", C:"El vaso de precipitados, porque contiene la mezcla.", D:"El agua, porque está en mayor proporción y disuelve al azúcar."},
+        correct: "D"
+      },
+      {
+        id: 3, points: 0.31, topic: "Soluto y Solvente",
+        context: "Un grupo de estudiantes agrega cuidadosamente una pequeña porción de sulfato de cobre sólido a un vaso que contiene agua destilada. Mientras agitan, los cristales van desapareciendo y el líquido adquiere una coloración azul uniforme. Para describir correctamente la solución, deben distinguir entre el componente que actúa como medio de disolución y la sustancia cuyas partículas se dispersan a escala microscópica dentro de ese medio. El docente les pide utilizar los términos soluto y solvente de manera precisa.",
+        stem: "¿Cuál es el soluto de la solución descrita?",
+        options: {A:"El sulfato de cobre.", B:"El agua destilada.", C:"El vaso de precipitados.", D:"La temperatura del laboratorio."},
+        correct: "A"
+      },
+      {
+        id: 4, points: 0.31, topic: "Factores que afectan la solubilidad",
+        context: "Dos equipos investigan cómo influye la temperatura en una solución. Cada grupo utiliza exactamente 100 g de agua y el mismo tipo de azúcar. El primer vaso se mantiene a 25 °C y el segundo se calienta hasta 80 °C. Los estudiantes añaden azúcar poco a poco hasta que ya no se disuelve más y registran que el vaso caliente admite una cantidad considerablemente mayor antes de alcanzar la saturación. Las demás condiciones del experimento permanecen prácticamente iguales para poder comparar los resultados.",
+        stem: "¿Qué factor explica mejor que el agua caliente pueda disolver una mayor cantidad de este sólido?",
+        options: {A:"La presión del aire aumenta necesariamente sobre el vaso caliente.", B:"El color del recipiente modifica la naturaleza del azúcar.", C:"El aumento de temperatura incrementa la solubilidad de muchos sólidos en agua.", D:"La masa del solvente se duplica automáticamente al calentar el agua."},
+        correct: "C"
+      },
+      {
+        id: 5, points: 0.31, topic: "Factores que afectan la solubilidad",
+        context: "Para analizar el comportamiento de los gases disueltos, los estudiantes comparan dos botellas idénticas de bebida carbonatada. Una se mantiene en refrigeración y la otra se deja varias horas a temperatura ambiente. Al abrirlas, la botella tibia libera el gas con mayor rapidez y produce más burbujas visibles, mientras que la fría conserva durante más tiempo parte del dióxido de carbono disuelto. La actividad busca relacionar este fenómeno cotidiano con el efecto de la temperatura sobre la solubilidad de los gases en líquidos.",
+        stem: "¿Cuál afirmación interpreta correctamente esta situación?",
+        options: {A:"La solubilidad de los gases aumenta siempre cuando aumenta la temperatura.", B:"La presión deja de influir cuando el gas está disuelto.", C:"La solubilidad de muchos gases disminuye cuando la temperatura del líquido aumenta.", D:"Los gases solo pueden disolverse si el líquido se agita continuamente."},
+        correct: "C"
+      },
+      {
+        id: 6, points: 0.31, topic: "Factores que afectan la disolución",
+        context: "En una experiencia sobre el proceso de disolución, dos estudiantes reciben la misma masa de un sólido soluble y vasos con igual cantidad de agua a la misma temperatura. El primer estudiante tritura el sólido hasta obtener partículas pequeñas y además agita continuamente; el segundo utiliza cristales grandes y deja el vaso en reposo. En el primer caso el sólido deja de observarse mucho antes. El docente aclara que deben diferenciar entre los factores que modifican la rapidez con la que ocurre la disolución y los que cambian la cantidad máxima que puede permanecer disuelta en equilibrio.",
+        stem: "¿Cuál conclusión es científicamente más adecuada?",
+        options: {A:"La agitación y el menor tamaño de partícula aumentan la velocidad de disolución, aunque no necesariamente cambian la solubilidad final.", B:"El soluto triturado se vuelve químicamente diferente y por eso siempre es más soluble.", C:"La agitación duplica la solubilidad máxima de cualquier sustancia.", D:"El tamaño de partícula no influye en la rapidez del proceso."},
+        correct: "A"
+      },
+      {
+        id: 7, points: 0.31, topic: "Curvas de solubilidad de sólidos",
+        context: "La gráfica de apoyo presenta curvas de solubilidad para dos sólidos, X y Y, expresadas como gramos de soluto que pueden disolverse en 100 g de agua a distintas temperaturas. El sólido X muestra un incremento marcado a medida que aumenta la temperatura, mientras que la curva de Y cambia de manera más moderada. Para responder, los estudiantes deben ubicar 40 °C en el eje horizontal, comparar la altura de ambas curvas en esa temperatura y reconocer que una curva situada más arriba representa una mayor cantidad máxima de soluto disuelto.",
+        stem: "Según la gráfica de apoyo, ¿qué sólido presenta mayor solubilidad a 40 °C?",
+        options: {A:"El sólido X, porque su curva aumenta más rápido a temperaturas altas.", B:"Los dos presentan exactamente la misma solubilidad a 40 °C.", C:"No es posible comparar sustancias mediante una curva de solubilidad.", D:"El sólido Y, porque a 40 °C su curva está situada por encima de la del sólido X."},
+        correct: "D"
+      },
+      {
+        id: 8, points: 0.31, topic: "Curvas de solubilidad de sólidos",
+        context: "Una solución saturada del sólido X se preparó a 40 °C utilizando exactamente 100 g de agua. De acuerdo con la gráfica, en esas condiciones pueden permanecer disueltos 55 g de X. Luego el sistema se calienta lentamente hasta 60 °C sin perder agua ni añadir más soluto. En la nueva temperatura, la curva indica una solubilidad de 80 g por cada 100 g de agua. Los estudiantes deben interpretar qué ocurre con el grado de saturación de la solución después del calentamiento y cuánto soluto adicional podría incorporarse antes de volver a saturarla.",
+        stem: "¿Qué ocurre con la solución después de calentarla de 40 °C a 60 °C?",
+        options: {A:"Se vuelve sobresaturada y precipitan 25 g de sólido.", B:"Se vuelve insaturada y podría disolver hasta 25 g adicionales de X.", C:"El agua deja de actuar como solvente por haber aumentado su temperatura.", D:"La solubilidad disminuye de 55 g a 35 g por 100 g de agua."},
+        correct: "B"
+      },
+      {
+        id: 9, points: 0.31, topic: "Curvas de solubilidad de sólidos",
+        context: "En un experimento de cristalización se prepara a 60 °C una solución saturada del sólido X con 100 g de agua y 80 g de soluto, valor señalado por la curva de solubilidad. Después, el recipiente se enfría lentamente hasta 20 °C sin que se evapore agua. A esa temperatura la gráfica muestra que solo pueden permanecer disueltos 35 g de X por cada 100 g de agua. El grupo observa la aparición de cristales y debe calcular la masa que necesariamente sale de la solución para restablecer el equilibrio de saturación.",
+        stem: "¿Qué masa de soluto X precipita al enfriar la solución hasta 20 °C?",
+        options: {A:"45 g", B:"35 g", C:"80 g", D:"115 g"},
+        correct: "A"
+      },
+      {
+        id: 10, points: 0.31, topic: "Curvas de solubilidad de gases",
+        context: "La gráfica de apoyo muestra la solubilidad de dos gases, G y H, en agua a diferentes temperaturas. A diferencia de muchas curvas correspondientes a sólidos, ambas líneas descienden a medida que la temperatura aumenta. Para el gas G, por ejemplo, la cantidad que puede mantenerse disuelta es mayor cerca de 20 °C y disminuye progresivamente al acercarse a 60 °C y 80 °C. Los estudiantes deben interpretar la dirección de la curva y relacionarla con situaciones como la pérdida de gas de una bebida cuando se calienta.",
+        stem: "¿Qué interpretación concuerda mejor con la curva de solubilidad del gas G?",
+        options: {A:"La cantidad de gas disuelto aumenta continuamente con la temperatura.", B:"La solubilidad del gas permanece constante entre 20 °C y 80 °C.", C:"El gas solo puede disolverse cuando el agua alcanza temperaturas muy altas.", D:"La solubilidad del gas disminuye a medida que aumenta la temperatura."},
+        correct: "D"
+      },
+      {
+        id: 11, points: 0.30, topic: "Solubilidad de gases: temperatura y presión",
+        context: "Una empresa de bebidas carbonatadas desea mantener la mayor cantidad posible de dióxido de carbono dentro del líquido antes de cerrar las botellas. En el proceso industrial puede controlar tanto la temperatura de la bebida como la presión del gas que se encuentra sobre el líquido. El equipo de control de calidad recuerda que los gases suelen permanecer mejor disueltos a temperaturas bajas y que, a temperatura constante, aumentar la presión parcial del gas favorece su incorporación al líquido. Deben elegir las condiciones más convenientes para reducir la pérdida de carbonatación.",
+        stem: "¿Qué combinación de condiciones favorece más que el CO₂ permanezca disuelto en la bebida?",
+        options: {A:"Alta temperatura y baja presión.", B:"Baja temperatura y alta presión.", C:"Alta temperatura y envase abierto.", D:"Temperatura alta y presión prácticamente nula."},
+        correct: "B"
+      },
+      {
+        id: 12, points: 0.30, topic: "Curvas de solubilidad de gases",
+        context: "En una actividad de interpretación cuantitativa, los estudiantes analizan la curva del gas G. La gráfica indica que a 20 °C pueden mantenerse disueltos aproximadamente 3,6 g de gas por litro de agua, mientras que a 40 °C la cantidad disminuye hasta 2,4 g/L. El docente pide no limitarse a describir que la curva baja, sino calcular el cambio numérico entre ambos puntos para expresar cuánto se reduce la solubilidad cuando el sistema se calienta veinte grados Celsius.",
+        stem: "¿En cuánto disminuye la solubilidad del gas G al pasar de 20 °C a 40 °C?",
+        options: {A:"0,8 g/L", B:"1,0 g/L", C:"1,2 g/L", D:"1,8 g/L"},
+        correct: "C"
+      }
+    ];
+
+    /*************************************************************************
+     * BANCO DE 3 PREGUNTAS ABIERTAS (QUÍMICA 8° - COMPETENCIAS)
+     * Sumatoria exacta = 1.30 puntos (0.43 + 0.43 + 0.44 = 1.30)
+     * Total Examen = 3.70 + 1.30 = 5.00
+     *************************************************************************/
+    const OPEN_QUESTIONS = [
+      {
+        id: 13, points: 0.43, topic: "Solubilidad, soluto y solvente",
+        context: "Durante una práctica, un grupo agrega pequeñas porciones de sal a 100 g de agua a temperatura constante. Al principio cada porción se disuelve completamente y la mezcla permanece transparente. Después de varias adiciones, llega un punto en que una nueva cantidad de sal ya no desaparece y comienza a acumularse en el fondo. El docente pide describir qué papel cumple cada componente de la solución y explicar cómo cambia la clasificación de la mezcla a medida que se aproxima al límite de solubilidad.",
+        stem: "Explica con tus palabras qué es el soluto, qué es el solvente y qué significa la solubilidad. Después diferencia una solución insaturada de una saturada utilizando el ejemplo de la sal en agua.",
+        keywords: ["solubilidad","soluto","solvente","solucion","agua","sal","disolver","insaturada","saturada","cantidad","temperatura","maxima"]
+      },
+      {
+        id: 14, points: 0.43, topic: "Factores que afectan la solubilidad y la disolución",
+        context: "La clase compara cuatro experiencias relacionadas con la disolución: azúcar en agua fría y caliente; una tableta entera y otra triturada en vasos idénticos; dos soluciones sometidas a diferente intensidad de agitación; y botellas de gaseosa conservadas a distintas temperaturas y presiones. El objetivo es separar conceptos que suelen confundirse: algunos factores modifican principalmente la velocidad con que un sólido se disuelve, mientras otros pueden cambiar la cantidad máxima de sustancia que permanece disuelta en equilibrio. En los gases, además, la presión desempeña un papel especialmente importante.",
+        stem: "Compara el efecto de la temperatura sobre la solubilidad de muchos sólidos y de muchos gases. Explica también qué papel pueden cumplir la presión, la agitación y el tamaño de partícula, diferenciando solubilidad de velocidad de disolución.",
+        keywords: ["temperatura","solidos","gases","presion","agitacion","tamano","particula","solubilidad","disolucion","velocidad","aumenta","disminuye","gaseosa"]
+      },
+      {
+        id: 15, points: 0.44, topic: "Curvas de solubilidad: sólidos y gases",
+        context: "En la lámina de apoyo aparecen dos comportamientos contrastantes. La curva del sólido X asciende con la temperatura: su solubilidad pasa de 35 g por 100 g de agua a 20 °C a 80 g por 100 g de agua a 60 °C. En cambio, la curva del gas G desciende: pasa de 3,6 g/L a 20 °C a 1,6 g/L a 60 °C. Además de describir ambas tendencias, los estudiantes deben usar los datos del sólido X para analizar qué sucede al enfriar una solución saturada y conectar la curva gaseosa con fenómenos observables en bebidas carbonatadas.",
+        stem: "Interpreta ambas curvas de solubilidad. Explica la tendencia del sólido X y la del gas G; calcula cuántos gramos de X precipitan si una solución saturada a 60 °C se enfría hasta 20 °C; y justifica por qué una bebida gaseosa suele conservar mejor su gas cuando está fría.",
+        keywords: ["curva","grafica","solubilidad","solido","gas","temperatura","precipita","45","disminuye","aumenta","20","60","gaseosa","fria"]
+      }
+    ];
+
+    /*************************************************************************
+     * ESTADO GLOBAL DE LA APLICACIÓN
+     *************************************************************************/
+    let examState = {
+      active: false,
+      finished: false,
+      studentName: "",
+      startTimeISO: null,
+      endTimeISO: null,
+      elapsedTotalSeconds: 0,
+      currentIndex: 0, // 0..11 cerradas, 12..14 abiertas
+      currentQuestionSeconds: 0,
+      closedAnswers: {},
+      openAnswers: {},
+      tabSwitches: 0,
+      tabEvents: [],
+      tabPenalty: 0.0,
+      noiseEvents: [],
+      noisePenalty: 0.0,
+      finishReason: "",
+      verificationCode: "",
+      resultsSummary: null,
+      closedPhaseAnsweredCount: 0,
+      closedPhaseClosedByTeacher: false,
+      closedPhaseClosedAtISO: null
+    };
+
+    let mainInterval = null;
+    let welcomeCheckInterval = null;
+    let audioContext = null;
+    let mediaStream = null;
+    let analyserNode = null;
+    let audioMonitorFrame = null;
+    let currentMicDb = 0;
+    let smoothedDb = 25;
+    let highNoiseStartMs = null;
+    let lastNoisePenaltyMs = 0;
+    let isInternalTransition = false;
+    let examActivationTimestamp = 0;
+    let qrJpegDataUrlGlobal = "";
+    let qrReportTextGlobal = "";
+
+    /*************************************************************************
+     * REFERENCIAS A ELEMENTOS DEL DOM (VERIFICADAS 1 A 1)
+     *************************************************************************/
+    const DOM = {
+      bannerImg: document.getElementById("institutional-banner-img"),
+      globalTimerChip: document.getElementById("global-timer-chip"),
+      globalTimerDisplay: document.getElementById("global-timer-display"),
+      tabSwitchesDisplay: document.getElementById("tab-switches-display"),
+      penaltyDisplay: document.getElementById("penalty-display"),
+      micMeterFill: document.getElementById("mic-meter-fill"),
+      micMeterText: document.getElementById("mic-meter-text"),
+      btnTeacherFinish: document.getElementById("btn-teacher-finish"),
+
+      screenWelcome: document.getElementById("screen-welcome"),
+      resumeBanner: document.getElementById("resume-banner"),
+      btnResumeExam: document.getElementById("btn-resume-exam"),
+      studentNameInput: document.getElementById("student-name"),
+      nameValidationMsg: document.getElementById("name-validation-msg"),
+      micSetupBox: document.getElementById("mic-setup-box"),
+      welcomeMicStatus: document.getElementById("welcome-mic-status"),
+      btnActivateMic: document.getElementById("btn-activate-mic"),
+      startReadinessHint: document.getElementById("start-readiness-hint"),
+      btnStartExam: document.getElementById("btn-start-exam"),
+
+      screenExam: document.getElementById("screen-exam"),
+      phaseBadge: document.getElementById("phase-badge"),
+      questionTopicBadge: document.getElementById("question-topic-badge"),
+      questionPointsBadge: document.getElementById("question-points-badge"),
+      questionCounter: document.getElementById("question-counter"),
+      progressLabel: document.getElementById("progress-label"),
+      progressPercent: document.getElementById("progress-percent"),
+      examProgressFill: document.getElementById("exam-progress-fill"),
+      progressShell: document.querySelector(".progress-shell"),
+      inlineProgressPercent: document.getElementById("inline-progress-percent"),
+      inlineProgressFill: document.getElementById("inline-progress-fill"),
+      questionTimerBox: document.getElementById("question-timer-box"),
+      questionTimerLabel: document.getElementById("question-timer-label"),
+      questionTimerDisplay: document.getElementById("question-timer-display"),
+      questionVisualTitle: document.getElementById("question-visual-title"),
+      questionVisualSub: document.getElementById("question-visual-sub"),
+      questionVisualSvg: document.getElementById("question-visual-svg"),
+      questionContext: document.getElementById("question-context"),
+      questionStem: document.getElementById("question-stem"),
+      optionsContainer: document.getElementById("options-container"),
+      openAnswerContainer: document.getElementById("open-answer-container"),
+      openTextarea: document.getElementById("open-textarea"),
+      sigLinesCount: document.getElementById("sig-lines-count"),
+      wordsCount: document.getElementById("words-count"),
+      coherenceBadge: document.getElementById("coherence-badge"),
+      openValidationMsg: document.getElementById("open-validation-msg"),
+      minTimeWarning: document.getElementById("min-time-warning"),
+      btnNextQuestion: document.getElementById("btn-next-question"),
+      btnTeacherNext: document.getElementById("btn-teacher-next"),
+      modalTeacherNext: document.getElementById("modal-teacher-next"),
+      teacherNextPasswordInput: document.getElementById("teacher-next-password-input"),
+      teacherNextErrorMsg: document.getElementById("teacher-next-error-msg"),
+      btnCancelTeacherNext: document.getElementById("btn-cancel-teacher-next"),
+      btnConfirmTeacherNext: document.getElementById("btn-confirm-teacher-next"),
+      btnFinishClosedTeacher: document.getElementById("btn-finish-closed-teacher"),
+      closedProgressTeacher: document.getElementById("closed-progress-teacher"),
+
+      screenResults: document.getElementById("screen-results"),
+      resStudentName: document.getElementById("res-student-name"),
+      resFinishReason: document.getElementById("res-finish-reason"),
+      resCorrectCount: document.getElementById("res-correct-count"),
+      resClosedAnswered: document.getElementById("res-closed-answered"),
+      resClosedScore: document.getElementById("res-closed-score"),
+      resOpenScore: document.getElementById("res-open-score"),
+      resTabPenalty: document.getElementById("res-tab-penalty"),
+      resNoisePenalty: document.getElementById("res-noise-penalty"),
+      resFinalGrade: document.getElementById("res-final-grade"),
+      qrDisplayImg: document.getElementById("qr-display-img"),
+      qrTempHolder: document.getElementById("qr-temp-holder"),
+      verificationCodeText: document.getElementById("verification-code-text"),
+      qrReportPreviewBox: document.getElementById("qr-report-preview-box"),
+      btnDownloadPdf: document.getElementById("btn-download-pdf"),
+
+      modalFinishClosed: document.getElementById("modal-finish-closed"),
+      closedTeacherPasswordInput: document.getElementById("closed-teacher-password-input"),
+      closedTeacherErrorMsg: document.getElementById("closed-teacher-error-msg"),
+      closedProgressModal: document.getElementById("closed-progress-modal"),
+      btnCancelFinishClosed: document.getElementById("btn-cancel-finish-closed"),
+      btnConfirmFinishClosed: document.getElementById("btn-confirm-finish-closed"),
+      modalFullscreen: document.getElementById("modal-fullscreen"),
+      btnReturnFullscreen: document.getElementById("btn-return-fullscreen"),
+      modalMicLost: document.getElementById("modal-mic-lost"),
+      btnRestoreMic: document.getElementById("btn-restore-mic"),
+      modalAlert: document.getElementById("modal-alert"),
+      modalAlertTitle: document.getElementById("modal-alert-title"),
+      modalAlertBody: document.getElementById("modal-alert-body"),
+      btnCloseAlert: document.getElementById("btn-close-alert"),
+      modalTeacher: document.getElementById("modal-teacher"),
+      teacherPasswordInput: document.getElementById("teacher-password-input"),
+      teacherErrorMsg: document.getElementById("teacher-error-msg"),
+      btnCancelTeacher: document.getElementById("btn-cancel-teacher"),
+      btnConfirmTeacher: document.getElementById("btn-confirm-teacher")
+    };
+
+    /*************************************************************************
+     * INICIALIZACIÓN SIN ERRORES DEL BANNER EN WEB Y EN PDF
+     *************************************************************************/
+    function initBannerDisplay() {
+      // El banner se genera específicamente para QUÍMICA 8°.
+      // No se reutilizan banners almacenados ni imágenes externas de otros grados.
+      // Banner oficial (assets/banner-data.js); si no cargó, se usa el banner dibujado como respaldo.
+      const official = window.BANNER_DATA_URL || null;
+      const generatedBanner = official || renderOfficialBannerCanvas();
+      bannerForPdfJpeg = generatedBanner;
+      bannerRatio = official ? (window.BANNER_RATIO || 326 / 1830) : 216 / 1200;
+      DOM.bannerImg.src = generatedBanner;
+      DOM.bannerImg.alt = "Banner Institucional Examen Parcial IV Periodo - QUÍMICA 8° - Gimnasio Cristiano Faro de Luz";
+    }
+
+    /*************************************************************************
+     * UTILIDADES DE FORMATO Y PERSISTENCIA (localStorage)
+     *************************************************************************/
+    function formatSecondsMMSS(totalSec) {
+      const safeSec = Math.max(0, Math.floor(totalSec));
+      const m = Math.floor(safeSec / 60);
+      const s = safeSec % 60;
+      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    }
+
+    function saveProgressToStorage() {
+      try {
+        localStorage.setItem(CONFIG.storageKey, JSON.stringify(examState));
+      } catch (e) {
+        console.warn("No se pudo guardar en localStorage:", e);
+      }
+    }
+
+    function loadProgressFromStorage() {
+      try {
+        const raw = localStorage.getItem(CONFIG.storageKey);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function updateTopMonitoringBar() {
+      const remainingGlobal = Math.max(0, CONFIG.totalTimeSeconds - examState.elapsedTotalSeconds);
+      DOM.globalTimerDisplay.textContent = formatSecondsMMSS(remainingGlobal);
+      if (remainingGlobal <= 300 && examState.active) {
+        DOM.globalTimerChip.classList.add("urgent");
+      } else {
+        DOM.globalTimerChip.classList.remove("urgent");
+      }
+
+      DOM.tabSwitchesDisplay.textContent = `${examState.tabSwitches} / 3`;
+      const totalPenalty = +(examState.tabPenalty + examState.noisePenalty).toFixed(2);
+      DOM.penaltyDisplay.textContent = `-${totalPenalty.toFixed(1)}`;
+    }
+
+    function showCustomAlert(title, message) {
+      DOM.modalAlertTitle.textContent = title;
+      DOM.modalAlertBody.textContent = message;
+      DOM.modalAlert.classList.remove("hidden");
+    }
+
+    /*************************************************************************
+     * VALIDACIÓN ESTRICTA DE NOMBRE COMPLETO (MÍNIMO NOMBRE Y APELLIDO)
+     *************************************************************************/
+    function isFullNameValid(rawName) {
+      const cleaned = (rawName || "").trim().replace(/\s+/g, " ");
+      if (cleaned.length < 5) return false;
+      const parts = cleaned.split(" ").filter(part => /[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]{2,}/.test(part));
+      return parts.length >= 2;
+    }
+
+    /*************************************************************************
+     * GESTIÓN DE MICRÓFONO Y MEDIDOR EN DECIBELES (dB) SIN FALSOS BLOQUEOS
+     *************************************************************************/
+    let micReady = false;
+
+    async function requestAndStartMicrophone() {
+      isInternalTransition = true;
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("Este navegador no permite acceder al micrófono desde este contexto. Usa un navegador moderno y, de ser necesario, abre el examen desde un origen seguro (HTTPS)." );
+        }
+        if (mediaStream) {
+          mediaStream.getTracks().forEach(t => t.stop());
+        }
+
+        try {
+          mediaStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: false,
+              noiseSuppression: false,
+              autoGainControl: false
+            },
+            video: false
+          });
+        } catch (constraintErr) {
+          mediaStream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: false
+          });
+        }
+
+        const audioTracks = mediaStream.getAudioTracks();
+        if (!audioTracks || audioTracks.length === 0) {
+          throw new Error("No se detectó pista de audio activa.");
+        }
+
+        audioTracks[0].onended = () => {
+          handleMicrophoneLost();
+        };
+
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!audioContext) {
+          audioContext = new AudioCtx();
+        }
+        if (audioContext.state === "suspended") {
+          await audioContext.resume().catch(() => {});
+        }
+
+        const source = audioContext.createMediaStreamSource(mediaStream);
+        analyserNode = audioContext.createAnalyser();
+        analyserNode.fftSize = 512;
+        analyserNode.smoothingTimeConstant = 0.7;
+        source.connect(analyserNode);
+
+        micReady = true;
+        DOM.micSetupBox.classList.add("ready");
+        DOM.welcomeMicStatus.textContent = "✔ Estado: Indicador de ruido activo con sensibilidad al 60 %.";
+        DOM.welcomeMicStatus.style.color = "var(--success)";
+        DOM.btnActivateMic.textContent = "✅ Indicador de ruido activo";
+        DOM.btnActivateMic.className = "btn btn-success";
+        DOM.modalMicLost.classList.add("hidden");
+
+        checkWelcomeReady();
+        startAudioLoop();
+        setTimeout(() => { isInternalTransition = false; }, 800);
+        return true;
+      } catch (err) {
+        micReady = false;
+        isInternalTransition = false;
+        DOM.micSetupBox.classList.remove("ready");
+        DOM.welcomeMicStatus.textContent = `❌ No fue posible activar el micrófono. ${err && err.message ? err.message : "Revisa los permisos del navegador."}`;
+        DOM.welcomeMicStatus.style.color = "var(--danger)";
+        checkWelcomeReady();
+        if (DOM.micMeterFill) DOM.micMeterFill.style.width = "0%";
+        if (DOM.micMeterText) DOM.micMeterText.textContent = "No activo";
+        updateDbPanel(null);
+        dbUI.level.textContent = "❌ No se pudo activar el micrófono (revisa los permisos)";
+        return false;
+      }
+    }
+
+    function handleMicrophoneLost() {
+      micReady = false;
+      DOM.micSetupBox.classList.remove("ready");
+      DOM.welcomeMicStatus.textContent = "ℹ️ El medidor de ruido está inactivo. El examen puede continuar normalmente.";
+      DOM.welcomeMicStatus.style.color = "var(--muted)";
+      DOM.btnActivateMic.textContent = "🎙️ Activar medidor de ruido (opcional)";
+      DOM.btnActivateMic.className = "btn btn-accent";
+      if (DOM.micMeterFill) DOM.micMeterFill.style.width = "0%";
+      if (DOM.micMeterText) DOM.micMeterText.textContent = "No activo";
+      updateDbPanel(null);
+      DOM.modalMicLost.classList.add("hidden");
+      checkWelcomeReady();
+    }
+
+    function startAudioLoop() {
+      if (audioMonitorFrame) cancelAnimationFrame(audioMonitorFrame);
+      const dataArray = new Uint8Array(analyserNode ? analyserNode.frequencyBinCount : 256);
+
+      function updateMeter() {
+        if (!analyserNode || !mediaStream) return;
+        const tracks = mediaStream.getAudioTracks();
+        if (!tracks.length || tracks[0].readyState === "ended" || !tracks[0].enabled) {
+          handleMicrophoneLost();
+          return;
+        }
+
+        if (audioContext && audioContext.state === "suspended") {
+          audioContext.resume().catch(() => {});
+        }
+
+        analyserNode.getByteTimeDomainData(dataArray);
+        let sumSquares = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          const normalized = (dataArray[i] - 128) / 128;
+          sumSquares += normalized * normalized;
+        }
+        const rms = Math.sqrt(sumSquares / dataArray.length);
+
+        let targetDb = 22;
+        const effectiveRms = rms * CONFIG.micSensitivityScale;
+        if (effectiveRms >= 0.0008) {
+          targetDb = 20 * Math.log10(effectiveRms) + 92;
+        }
+        smoothedDb = smoothedDb * 0.72 + targetDb * 0.28;
+        currentMicDb = Math.max(0, Math.min(100, Math.round(smoothedDb)));
+
+        DOM.micMeterFill.style.width = `${currentMicDb}%`;
+        DOM.micMeterText.textContent = `${currentMicDb} dB`;
+        updateDbPanel(currentMicDb);
+
+        if (currentMicDb >= CONFIG.micThresholdDb) {
+          DOM.micMeterFill.style.backgroundColor = "var(--danger)";
+        } else if (currentMicDb >= 55) {
+          DOM.micMeterFill.style.backgroundColor = "var(--warning)";
+        } else {
+          DOM.micMeterFill.style.backgroundColor = "#16a34a";
+        }
+
+        const now = Date.now();
+        if (examState.active && !examState.finished) {
+          if (currentMicDb > CONFIG.micThresholdDb) {
+            if (!highNoiseStartMs) {
+              highNoiseStartMs = now;
+            } else if (now - highNoiseStartMs >= CONFIG.micSustainMs) {
+              if (now - lastNoisePenaltyMs >= CONFIG.micCooldownMs) {
+                lastNoisePenaltyMs = now;
+                highNoiseStartMs = null;
+                registerNoisePenalty(currentMicDb);
+              }
+            }
+          } else {
+            highNoiseStartMs = null;
+          }
+        }
+
+        audioMonitorFrame = requestAnimationFrame(updateMeter);
+      }
+
+      audioMonitorFrame = requestAnimationFrame(updateMeter);
+    }
+
+    function registerNoisePenalty(peakDb) {
+      examState.noisePenalty = +(examState.noisePenalty + CONFIG.micPenaltyValue).toFixed(2);
+      const timeStr = new Date().toLocaleTimeString();
+      examState.noiseEvents.push({
+        time: timeStr,
+        decibels: peakDb
+      });
+      updateTopMonitoringBar();
+      saveProgressToStorage();
+      showCustomAlert(
+        "🔊 Alerta de nivel sonoro",
+        `El indicador de ruido registró un nivel estimado de ${peakDb} dB (superando el umbral configurado de ${CONFIG.micThresholdDb} dB durante aproximadamente 1 segundo). Se ha aplicado una penalización de -${CONFIG.micPenaltyValue.toFixed(1)} puntos. Mantén silencio durante la evaluación.`
+      );
+    }
+
+    /*************************************************************************
+     * MEDIDOR DE DECIBELES CON BOTÓN (visible durante todo el examen)
+     *************************************************************************/
+    const dbUI = {
+      btn: document.getElementById("btn-db-toggle"),
+      btnVal: document.getElementById("db-btn-val"),
+      panel: document.getElementById("db-panel"),
+      close: document.getElementById("db-close"),
+      level: document.getElementById("db-level"),
+      stats: document.getElementById("db-stats"),
+      canvas: document.getElementById("db-history"),
+      micBtn: document.getElementById("db-mic-btn")
+    };
+    const dbStats = { min: Infinity, max: 0, sum: 0, n: 0, hist: [], lastPush: 0 };
+
+    function updateDbPanel(db) {
+      const active = typeof db === "number";
+      dbUI.btnVal.textContent = active ? `${db} dB` : "-- dB";
+      dbUI.micBtn.classList.toggle("hidden", active);
+      if (!active) {
+        dbUI.level.className = "db-level";
+        dbUI.level.textContent = "Micrófono apagado";
+        return;
+      }
+      const zone = db >= CONFIG.micThresholdDb ? ["high", "🔴 Ruido alto — penaliza si se mantiene"]
+        : db >= 55 ? ["mid", "🟠 Nivel moderado — baja la voz"] : ["ok", "🟢 Ambiente tranquilo"];
+      dbUI.level.className = "db-level " + zone[0];
+      dbUI.level.textContent = zone[1];
+      const now = Date.now();
+      if (now - dbStats.lastPush < 500) return;
+      dbStats.lastPush = now;
+      dbStats.n += 1;
+      dbStats.sum += db;
+      dbStats.min = Math.min(dbStats.min, db);
+      dbStats.max = Math.max(dbStats.max, db);
+      dbStats.hist.push(db);
+      if (dbStats.hist.length > 120) dbStats.hist.shift();
+      const alerts = examState && examState.noiseEvents ? examState.noiseEvents.length : 0;
+      dbUI.stats.textContent = `Mín ${dbStats.min} · Prom ${Math.round(dbStats.sum / dbStats.n)} · Máx ${dbStats.max} dB · Alertas: ${alerts}`;
+      drawDbHistory();
+    }
+
+    function drawDbHistory() {
+      const c = dbUI.canvas, g = c.getContext("2d"), w = c.width, h = c.height;
+      const yOf = v => h - (v / 100) * h;
+      g.clearRect(0, 0, w, h);
+      g.strokeStyle = "#b91c1c";
+      g.lineWidth = 1;
+      g.setLineDash([4, 3]);
+      g.beginPath();
+      g.moveTo(0, yOf(CONFIG.micThresholdDb));
+      g.lineTo(w, yOf(CONFIG.micThresholdDb));
+      g.stroke();
+      g.setLineDash([]);
+      g.strokeStyle = "#153866";
+      g.lineWidth = 2;
+      g.beginPath();
+      dbStats.hist.forEach((v, i) => {
+        const x = (i / 119) * w;
+        if (i === 0) g.moveTo(x, yOf(v)); else g.lineTo(x, yOf(v));
+      });
+      g.stroke();
+    }
+
+    function setDbPanel(open) {
+      dbUI.panel.classList.toggle("hidden", !open);
+      dbUI.btn.setAttribute("aria-pressed", String(open));
+    }
+
+    // Un solo botón: abre el medidor y, si el micrófono aún no está activo, lo solicita.
+    dbUI.btn.addEventListener("click", () => {
+      const open = dbUI.panel.classList.contains("hidden");
+      setDbPanel(open);
+      if (open && !micReady) requestAndStartMicrophone();
+    });
+    dbUI.close.addEventListener("click", () => setDbPanel(false));
+    dbUI.micBtn.addEventListener("click", requestAndStartMicrophone);
+
+    // Mantiene el panel y la franja de progreso justo debajo del banner fijo.
+    const stackEl = document.getElementById("sticky-stack");
+    const syncStackHeight = () => document.documentElement.style.setProperty("--stack-h", stackEl.offsetHeight + "px");
+    if (window.ResizeObserver) new ResizeObserver(syncStackHeight).observe(stackEl);
+    window.addEventListener("resize", syncStackHeight);
+    syncStackHeight();
+
+    /*************************************************************************
+     * PANTALLA COMPLETA Y PAGE VISIBILITY API
+     *************************************************************************/
+    async function enterFullscreenSafe() {
+      isInternalTransition = true;
+      try {
+        const el = document.documentElement;
+        if (!document.fullscreenElement) {
+          if (el.requestFullscreen) {
+            await el.requestFullscreen();
+          } else if (el.webkitRequestFullscreen) {
+            await el.webkitRequestFullscreen();
+          }
+        }
+        DOM.modalFullscreen.classList.add("hidden");
+      } catch (e) {
+        console.warn("No se pudo activar pantalla completa automáticamente:", e);
+      } finally {
+        setTimeout(() => { isInternalTransition = false; }, 600);
+      }
+    }
+
+    document.addEventListener("fullscreenchange", () => {
+      if (!examState.active || examState.finished) return;
+      if (!document.fullscreenElement) {
+        DOM.modalFullscreen.classList.remove("hidden");
+      } else {
+        DOM.modalFullscreen.classList.add("hidden");
+      }
+    });
+
+    DOM.btnReturnFullscreen.addEventListener("click", () => {
+      enterFullscreenSafe();
+    });
+
+    let lastWindowExitMs = 0;
+
+    function registerWindowExit(sourceLabel) {
+      if (!examState.active || examState.finished || isInternalTransition) return;
+      if (Date.now() - examActivationTimestamp < 1500) return;
+      const now = Date.now();
+      if (now - lastWindowExitMs < 1000) return; // evita doble conteo blur + visibilitychange
+      lastWindowExitMs = now;
+
+      examState.tabSwitches += 1;
+      const timeStr = new Date().toLocaleTimeString();
+      examState.tabEvents.push(`${timeStr} — ${sourceLabel}`);
+
+      if (examState.tabSwitches === 1) {
+        examState.tabPenalty = +(examState.tabPenalty + CONFIG.tabPenalties[0]).toFixed(2);
+        updateTopMonitoringBar();
+        saveProgressToStorage();
+        showCustomAlert(
+          "🚫 Cambio de pestaña o ventana prohibido",
+          `Se registró la salida 1 de 3 (${sourceLabel}) y se aplicó una penalización de -${CONFIG.tabPenalties[0].toFixed(1)} puntos. Regresa y mantén esta ventana visible en pantalla completa.`
+        );
+      } else if (examState.tabSwitches === 2) {
+        examState.tabPenalty = +(examState.tabPenalty + CONFIG.tabPenalties[1]).toFixed(2);
+        updateTopMonitoringBar();
+        saveProgressToStorage();
+        showCustomAlert(
+          "🚫 Segundo cambio de pestaña o ventana",
+          `Se registró la salida 2 de 3 (${sourceLabel}) y se aplicó una penalización adicional de -${CONFIG.tabPenalties[1].toFixed(1)} puntos (acumulado: -1.5). Una tercera salida finalizará automáticamente la evaluación.`
+        );
+      } else if (examState.tabSwitches >= 3) {
+        updateTopMonitoringBar();
+        saveProgressToStorage();
+        finalizeEvaluation("Evaluación finalizada por tercera salida de la ventana del examen");
+      }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        registerWindowExit("pestaña oculta o ventana minimizada");
+      }
+    });
+
+    window.addEventListener("blur", () => {
+      setTimeout(() => {
+        if (examState.active && !examState.finished && !document.hasFocus()) {
+          registerWindowExit("cambio de ventana o pérdida de foco");
+        }
+      }, 250);
+    });
+
+    // Protección contra cierre o recarga accidental/intencional durante una evaluación activa.
+    // Los navegadores no permiten impedir físicamente el cierre si el usuario confirma,
+    // pero este evento activa la advertencia nativa antes de abandonar la página.
+    window.addEventListener("beforeunload", (e) => {
+      if (examState.active && !examState.finished) {
+        saveProgressToStorage();
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    });
+
+    window.addEventListener("pagehide", () => {
+      if (examState.active && !examState.finished) {
+        saveProgressToStorage();
+      }
+    });
+
+    /*************************************************************************
+     * BLOQUEO DE COPIAR, PEGAR, CORTAR, ARRASTRAR, MENÚ Y ATAJOS DE TECLADO
+     *************************************************************************/
+    ["copy", "cut", "paste", "dragstart", "drop", "contextmenu"].forEach(evtName => {
+      document.addEventListener(evtName, (e) => {
+        if (examState.active && !examState.finished) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (!examState.active || examState.finished) return;
+      const key = (e.key || "").toLowerCase();
+      const ctrlOrCmd = e.ctrlKey || e.metaKey;
+
+      if (e.key === "F12") {
+        e.preventDefault();
+        return false;
+      }
+      if (ctrlOrCmd && ["c", "v", "x", "u", "s", "p"].includes(key)) {
+        e.preventDefault();
+        return false;
+      }
+      if (ctrlOrCmd && e.shiftKey && ["i", "j", "c"].includes(key)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    /*************************************************************************
+     * VALIDACIÓN DE INICIO Y REANUDACIÓN DE SESIÓN (localStorage)
+     *************************************************************************/
+    function checkWelcomeReady() {
+      const rawName = DOM.studentNameInput.value;
+      const nameOk = isFullNameValid(rawName);
+
+      if (nameOk) {
+        DOM.studentNameInput.classList.add("valid");
+        DOM.nameValidationMsg.textContent = "✔ Nombre completo válido.";
+        DOM.nameValidationMsg.classList.add("ok");
+        DOM.btnStartExam.disabled = false;
+        DOM.startReadinessHint.textContent = micReady
+          ? "✅ Todo listo. El medidor de ruido está activo y puedes iniciar la evaluación."
+          : "✅ Todo listo. Puedes iniciar la evaluación; el micrófono es opcional.";
+        DOM.startReadinessHint.style.color = "var(--success)";
+      } else {
+        DOM.studentNameInput.classList.remove("valid");
+        DOM.nameValidationMsg.textContent = "⚠️ Requisito obligatorio: Escribe tu nombre y apellido completos (mínimo 2 palabras).";
+        DOM.nameValidationMsg.classList.remove("ok");
+        DOM.btnStartExam.disabled = true;
+        DOM.startReadinessHint.textContent = "Escribe tu nombre y apellido completos para habilitar el inicio. El micrófono es opcional.";
+        DOM.startReadinessHint.style.color = "var(--warning)";
+      }
+    }
+
+    ["input", "keyup", "change", "blur", "paste"].forEach(evt => {
+      DOM.studentNameInput.addEventListener(evt, () => {
+        setTimeout(checkWelcomeReady, 10);
+      });
+    });
+
+    DOM.btnActivateMic.addEventListener("click", requestAndStartMicrophone);
+    DOM.btnRestoreMic.addEventListener("click", requestAndStartMicrophone);
+    DOM.btnCloseAlert.addEventListener("click", () => {
+      DOM.modalAlert.classList.add("hidden");
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initBannerDisplay();
+      const saved = loadProgressFromStorage();
+      if (saved && saved.active && !saved.finished) {
+        DOM.resumeBanner.classList.remove("hidden");
+        DOM.studentNameInput.value = saved.studentName || "";
+      }
+      checkWelcomeReady();
+      welcomeCheckInterval = setInterval(() => {
+        if (!examState.active && !examState.finished) {
+          checkWelcomeReady();
+        }
+      }, 300);
+    });
+
+    DOM.btnResumeExam.addEventListener("click", async () => {
+      const saved = loadProgressFromStorage();
+      if (!saved) return;
+      examState = saved;
+      if (welcomeCheckInterval) clearInterval(welcomeCheckInterval);
+      examActivationTimestamp = Date.now();
+      await enterFullscreenSafe();
+      DOM.screenWelcome.classList.add("hidden");
+      DOM.screenExam.classList.remove("hidden");
+      document.body.classList.add("exam-live");
+      updateTopMonitoringBar();
+      renderCurrentQuestion(true);
+      startMasterClock();
+    });
+
+    DOM.btnStartExam.addEventListener("click", async () => {
+      const fullNameClean = DOM.studentNameInput.value.trim().replace(/\s+/g, " ");
+      if (!isFullNameValid(fullNameClean)) {
+        showCustomAlert(
+          "Nombre Completo Requerido",
+          "Por favor escribe tu nombre y apellido completos antes de comenzar la evaluación."
+        );
+        DOM.studentNameInput.focus();
+        return;
+      }
+
+      if (welcomeCheckInterval) clearInterval(welcomeCheckInterval);
+
+      examState = {
+        active: true,
+        finished: false,
+        studentName: fullNameClean,
+        startTimeISO: new Date().toISOString(),
+        endTimeISO: null,
+        elapsedTotalSeconds: 0,
+        currentIndex: 0,
+        currentQuestionSeconds: 0,
+        closedAnswers: {},
+        openAnswers: {},
+        tabSwitches: 0,
+        tabEvents: [],
+        tabPenalty: 0.0,
+        noiseEvents: [],
+        noisePenalty: 0.0,
+        finishReason: "",
+        verificationCode: "",
+        resultsSummary: null,
+        closedPhaseAnsweredCount: 0,
+        closedPhaseClosedByTeacher: false,
+        closedPhaseClosedAtISO: null
+      };
+
+      examActivationTimestamp = Date.now();
+      saveProgressToStorage();
+      await enterFullscreenSafe();
+      DOM.screenWelcome.classList.add("hidden");
+      DOM.screenExam.classList.remove("hidden");
+      document.body.classList.add("exam-live");
+      updateTopMonitoringBar();
+      renderCurrentQuestion(false);
+      startMasterClock();
+    });
+
+    /*************************************************************************
+     * RENDERIZADO DE PREGUNTAS CERRADAS (1-12) Y ABIERTAS (13-15)
+     *************************************************************************/
+    function isClosedPhase() {
+      return examState.currentIndex < CLOSED_QUESTIONS.length;
+    }
+
+    function updateQuestionIllustration(questionId, topicName, pointsVal) {
+      const illus = QUESTION_ILLUSTRATIONS[questionId] || QUESTION_ILLUSTRATIONS[1];
+      DOM.questionVisualTitle.textContent = `🔬 ${illus.title}`;
+      DOM.questionVisualSub.textContent = `${topicName} · Valor: ${pointsVal.toFixed(2)} pts | Mr. Cristian Ayazo`;
+      DOM.questionVisualSvg.innerHTML = illus.svg;
+    }
+
+    function renderCurrentQuestion(isResuming = false) {
+      if (!isResuming) {
+        examState.currentQuestionSeconds = 0;
+      }
+
+      const totalCount = CLOSED_QUESTIONS.length + OPEN_QUESTIONS.length;
+      const currentNumber = examState.currentIndex + 1;
+      const progressPct = Math.round((currentNumber / totalCount) * 100);
+      if (DOM.progressLabel) DOM.progressLabel.textContent = `Progreso: ${currentNumber} de ${totalCount}`;
+      if (DOM.progressPercent) DOM.progressPercent.textContent = `${progressPct}%`;
+      if (DOM.examProgressFill) DOM.examProgressFill.style.width = `${progressPct}%`;
+      if (DOM.progressShell) DOM.progressShell.setAttribute("aria-valuenow", String(progressPct));
+      if (DOM.inlineProgressPercent) DOM.inlineProgressPercent.textContent = `${progressPct}%`;
+      if (DOM.inlineProgressFill) DOM.inlineProgressFill.style.width = `${progressPct}%`;
+
+      if (isClosedPhase()) {
+        const q = CLOSED_QUESTIONS[examState.currentIndex];
+        DOM.phaseBadge.textContent = "Parte I: Selección Múltiple (Total: 3.70 pts)";
+        DOM.questionTopicBadge.textContent = q.topic;
+        DOM.questionPointsBadge.textContent = `Valor pregunta: ${q.points.toFixed(2)} pts`;
+        DOM.questionCounter.textContent = `Pregunta ${examState.currentIndex + 1} de ${CLOSED_QUESTIONS.length}`;
+        DOM.questionContext.textContent = q.context;
+        DOM.questionStem.textContent = q.stem;
+        updateQuestionIllustration(q.id, q.topic, q.points);
+
+        DOM.openAnswerContainer.classList.add("hidden");
+        DOM.optionsContainer.classList.remove("hidden");
+        DOM.optionsContainer.innerHTML = "";
+
+        const selectedOpt = examState.closedAnswers[q.id] || null;
+        ["A", "B", "C", "D"].forEach(letter => {
+          const card = document.createElement("div");
+          card.className = "option-card" + (selectedOpt === letter ? " selected" : "");
+          card.setAttribute("tabindex", "0");
+          card.setAttribute("role", "radio");
+          card.setAttribute("aria-checked", selectedOpt === letter ? "true" : "false");
+          card.innerHTML = `
+            <div class="option-letter">${letter}</div>
+            <div class="option-text">${q.options[letter]}</div>
+          `;
+          card.addEventListener("click", () => {
+            examState.closedAnswers[q.id] = letter;
+            Array.from(DOM.optionsContainer.children).forEach(c => {
+              c.classList.remove("selected");
+              c.setAttribute("aria-checked", "false");
+            });
+            card.classList.add("selected");
+            card.setAttribute("aria-checked", "true");
+            saveProgressToStorage();
+            updateQuestionNavigationState();
+          });
+          card.addEventListener("keydown", (ev) => {
+            if (ev.key === "Enter" || ev.key === " ") {
+              ev.preventDefault();
+              card.click();
+            }
+          });
+          DOM.optionsContainer.appendChild(card);
+        });
+
+        const isLastClosed = examState.currentIndex === CLOSED_QUESTIONS.length - 1;
+        const closedAnsweredCount = CLOSED_QUESTIONS.filter(item => Boolean(examState.closedAnswers[item.id])).length;
+        DOM.btnNextQuestion.textContent = "Siguiente pregunta →";
+        // El botón docente está disponible desde la pregunta cerrada 1 hasta la 12.
+        if (DOM.btnFinishClosedTeacher) DOM.btnFinishClosedTeacher.classList.remove("hidden");
+        if (DOM.closedProgressTeacher) {
+          DOM.closedProgressTeacher.classList.remove("hidden");
+          DOM.closedProgressTeacher.textContent = `Progreso Parte I: ${closedAnsweredCount} de ${CLOSED_QUESTIONS.length} respondidas`;
+        }
+        // En la pregunta 12 no se permite pasar a la Parte II sin autorización docente.
+        DOM.btnNextQuestion.classList.toggle("hidden", isLastClosed);
+      } else {
+        const openIdx = examState.currentIndex - CLOSED_QUESTIONS.length;
+        const q = OPEN_QUESTIONS[openIdx];
+
+        DOM.phaseBadge.textContent = "Parte II: Preguntas Abiertas (Total: 1.30 pts)";
+        DOM.questionTopicBadge.textContent = q.topic;
+        DOM.questionPointsBadge.textContent = `Valor pregunta: ${q.points.toFixed(2)} pts`;
+        DOM.questionCounter.textContent = `Pregunta Abierta ${openIdx + 1} de ${OPEN_QUESTIONS.length}`;
+        DOM.questionContext.textContent = q.context;
+        DOM.questionStem.textContent = q.stem;
+        updateQuestionIllustration(q.id, q.topic, q.points);
+
+        DOM.optionsContainer.classList.add("hidden");
+        DOM.openAnswerContainer.classList.remove("hidden");
+
+        DOM.openTextarea.value = examState.openAnswers[q.id] || "";
+        updateOpenCountersUI();
+
+        if (DOM.btnFinishClosedTeacher) DOM.btnFinishClosedTeacher.classList.add("hidden");
+        if (DOM.closedProgressTeacher) DOM.closedProgressTeacher.classList.add("hidden");
+        DOM.btnNextQuestion.classList.remove("hidden");
+        DOM.btnNextQuestion.textContent =
+          openIdx === OPEN_QUESTIONS.length - 1
+            ? "Finalizar y Entregar Evaluación ✔"
+            : "Siguiente pregunta abierta →";
+      }
+
+      if (DOM.btnTeacherNext) {
+        const lastQuestion = examState.currentIndex === (CLOSED_QUESTIONS.length + OPEN_QUESTIONS.length - 1);
+        DOM.btnTeacherNext.textContent = lastQuestion ? "🔐 Finalizar pregunta — Docente" : "🔐 Avanzar pregunta — Docente";
+      }
+      updateQuestionTimerUI();
+      updateQuestionNavigationState();
+      saveProgressToStorage();
+    }
+
+    /*************************************************************************
+     * ANÁLISIS DE COHERENCIA Y LÍNEAS SIGNIFICATIVAS EN PREGUNTAS ABIERTAS
+     * La validación combina extensión, diversidad léxica y evidencia temática;
+     * una respuesta extensa pero ajena al tema no obtiene el puntaje.
+     *************************************************************************/
+    function normalizeText(str) {
+      return (str || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function analyzeOpenResponse(rawText, questionObj = null) {
+      const text = (rawText || "").trim();
+      if (!text) {
+        return { significantLines: 0, totalWords: 0, isCoherent: false, matchedKeywords: 0 };
+      }
+
+      const allWords = text
+        .split(/\s+/)
+        .filter(w => /[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]{2,}/.test(w));
+
+      const uniqueTotal = new Set(allWords.map(w => normalizeText(w)));
+      const lexicalDiversity = allWords.length > 0 ? uniqueTotal.size / allWords.length : 0;
+
+      // 1. Conteo por renglones explícitos con salto de línea (Enter) y >= 5 palabras coherentes
+      const rawLines = text.split(/\n+/).map(l => l.trim()).filter(Boolean);
+      let explicitValidLines = 0;
+      rawLines.forEach(line => {
+        const lw = line.split(/\s+/).filter(w => /[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]{2,}/.test(w));
+        const uq = new Set(lw.map(w => normalizeText(w)));
+        if (lw.length >= CONFIG.minWordsPerLine && uq.size >= 3) {
+          explicitValidLines += 1;
+        }
+      });
+
+      // 2. Conteo por ideas/oraciones separadas por punto, punto y coma o dos puntos con >= 5 palabras
+      const rawSentences = text.split(/[.!;:\n]+/).map(s => s.trim()).filter(Boolean);
+      let validSentences = 0;
+      rawSentences.forEach(sent => {
+        const sw = sent.split(/\s+/).filter(w => /[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9]{2,}/.test(w));
+        const uq = new Set(sw.map(w => normalizeText(w)));
+        if (sw.length >= CONFIG.minWordsPerLine && uq.size >= 3) {
+          validSentences += 1;
+        }
+      });
+
+      // 3. Conteo equivalente por bloques de palabras coherentes (cada 6 palabras con sentido = 1 línea significativa)
+      let wordBlockLines = 0;
+      if (uniqueTotal.size >= 8 && lexicalDiversity >= 0.34) {
+        wordBlockLines = Math.floor(allWords.length / 6);
+      }
+
+      const sigLines = Math.max(explicitValidLines, validSentences, wordBlockLines);
+
+      const norm = normalizeText(text);
+      let matchedKeywords = 0;
+      if (questionObj && Array.isArray(questionObj.keywords)) {
+        questionObj.keywords.forEach(kw => {
+          if (norm.includes(kw)) matchedKeywords++;
+        });
+      }
+
+      const generalCoherenceTerms = [
+        "porque", "debido", "diferencia", "relacion", "proceso", "ejemplo", "calculo", "grafica", "curva",
+        "solubilidad", "soluble", "soluto", "solvente", "solucion", "disolucion", "disolver", "saturada", "insaturada",
+        "sobresaturada", "temperatura", "presion", "agitacion", "particula", "tamano", "solido", "solidos", "gas", "gases",
+        "precipita", "precipitacion", "cristales", "agua", "cantidad", "gramos", "litro", "equilibrio", "fria", "caliente"
+      ];
+      let generalHits = 0;
+      generalCoherenceTerms.forEach(t => {
+        if (norm.includes(t)) generalHits++;
+      });
+
+      // La coherencia requiere extensión suficiente y varias evidencias temáticas.
+      // Esto reduce falsos positivos producidos por respuestas largas pero ajenas al tema.
+      const minKeywordEvidence = questionObj && Array.isArray(questionObj.keywords) ? 3 : 0;
+      const isCoherent =
+        sigLines >= CONFIG.minSignificantLines &&
+        allWords.length >= 28 &&
+        uniqueTotal.size >= 16 &&
+        lexicalDiversity >= 0.36 &&
+        ((matchedKeywords >= minKeywordEvidence) || (matchedKeywords >= 2 && generalHits >= 3));
+
+      return {
+        significantLines: sigLines,
+        totalWords: allWords.length,
+        isCoherent,
+        matchedKeywords
+      };
+    }
+
+    function updateOpenCountersUI() {
+      if (isClosedPhase()) return;
+      const openIdx = examState.currentIndex - CLOSED_QUESTIONS.length;
+      const q = OPEN_QUESTIONS[openIdx];
+      const val = DOM.openTextarea.value;
+      examState.openAnswers[q.id] = val;
+
+      const stats = analyzeOpenResponse(val, q);
+      DOM.sigLinesCount.textContent = `Líneas significativas: ${stats.significantLines} / ${CONFIG.minSignificantLines}`;
+      DOM.wordsCount.textContent = `Palabras totales: ${stats.totalWords}`;
+
+      if (stats.significantLines >= CONFIG.minSignificantLines) {
+        DOM.sigLinesCount.classList.add("ok");
+      } else {
+        DOM.sigLinesCount.classList.remove("ok");
+      }
+
+      if (stats.isCoherent) {
+        DOM.coherenceBadge.textContent = `Estado: ✔ CORRECTA (+${q.points.toFixed(2)} pts)`;
+        DOM.coherenceBadge.classList.add("ok");
+        DOM.openValidationMsg.textContent = `✔ Tu respuesta cumple los criterios automáticos de extensión y pertinencia temática (${q.points.toFixed(2)} pts).`;
+        DOM.openValidationMsg.style.color = "var(--success)";
+      } else if (stats.significantLines >= CONFIG.minSignificantLines) {
+        DOM.coherenceBadge.textContent = "Coherencia: Incluye conceptos de la pregunta";
+        DOM.coherenceBadge.classList.remove("ok");
+        DOM.openValidationMsg.textContent = "La extensión es suficiente, pero faltan conceptos clave o una relación más clara con la pregunta.";
+        DOM.openValidationMsg.style.color = "var(--warning)";
+      } else {
+        DOM.coherenceBadge.textContent = "Coherencia temática: En redacción...";
+        DOM.coherenceBadge.classList.remove("ok");
+        DOM.openValidationMsg.textContent = `Completa al menos ${CONFIG.minSignificantLines} líneas significativas coherentes con la pregunta.`;
+        DOM.openValidationMsg.style.color = "var(--warning)";
+      }
+    }
+
+    DOM.openTextarea.addEventListener("input", () => {
+      updateOpenCountersUI();
+      updateQuestionNavigationState();
+      saveProgressToStorage();
+    });
+
+    /*************************************************************************
+     * CONTROL DE TIEMPOS Y AVANCE DE PREGUNTAS
+     *************************************************************************/
+    function updateQuestionTimerUI() {
+      if (!DOM.questionTimerBox) return;
+      DOM.questionTimerBox.classList.remove("timer-running", "timer-ready", "timer-urgent");
+      if (isClosedPhase()) {
+        const remainingMin = Math.max(0, CONFIG.minClosedTimeSeconds - examState.currentQuestionSeconds);
+        DOM.questionTimerLabel.textContent = "⏳ Tiempo obligatorio — cerrada:";
+        DOM.questionTimerDisplay.textContent = formatSecondsMMSS(remainingMin);
+        DOM.questionTimerBox.classList.add(remainingMin > 0 ? "timer-running" : "timer-ready");
+      } else {
+        const remainingOpen = Math.max(0, CONFIG.maxOpenTimeSeconds - examState.currentQuestionSeconds);
+        DOM.questionTimerLabel.textContent = "⏰ Tiempo máximo — abierta:";
+        DOM.questionTimerDisplay.textContent = formatSecondsMMSS(remainingOpen);
+        if (remainingOpen <= 30) DOM.questionTimerBox.classList.add("timer-urgent");
+        else DOM.questionTimerBox.classList.add("timer-running");
+      }
+    }
+
+    function updateQuestionNavigationState() {
+      if (isClosedPhase()) {
+        const q = CLOSED_QUESTIONS[examState.currentIndex];
+        const closedAnsweredCount = CLOSED_QUESTIONS.filter(item => Boolean(examState.closedAnswers[item.id])).length;
+        if (DOM.closedProgressTeacher) {
+          DOM.closedProgressTeacher.textContent = `Progreso Parte I: ${closedAnsweredCount} de ${CLOSED_QUESTIONS.length} respondidas`;
+        }
+        const hasSelected = Boolean(examState.closedAnswers[q.id]);
+        const timeCompleted = examState.currentQuestionSeconds >= CONFIG.minClosedTimeSeconds;
+
+        if (!timeCompleted) {
+          const remaining = Math.max(0, CONFIG.minClosedTimeSeconds - examState.currentQuestionSeconds);
+          DOM.minTimeWarning.textContent = `⏳ Tiempo obligatorio: ${formatSecondsMMSS(remaining)}. Podrás continuar cuando llegue a 00:00.`;
+          DOM.minTimeWarning.classList.remove("ready");
+        } else if (!hasSelected) {
+          DOM.minTimeWarning.textContent = "Selecciona una respuesta (A, B, C o D) para continuar";
+          DOM.minTimeWarning.classList.remove("ready");
+        } else {
+          DOM.minTimeWarning.textContent = "✔ Tiempo mínimo y selección completados. Puedes continuar.";
+          DOM.minTimeWarning.classList.add("ready");
+        }
+
+        DOM.btnNextQuestion.disabled = !(hasSelected && timeCompleted);
+      } else {
+        const openIdx = examState.currentIndex - CLOSED_QUESTIONS.length;
+        const q = OPEN_QUESTIONS[openIdx];
+        const stats = analyzeOpenResponse(DOM.openTextarea.value, q);
+        const linesOk = stats.significantLines >= CONFIG.minSignificantLines;
+
+        const remainingOpen = Math.max(0, CONFIG.maxOpenTimeSeconds - examState.currentQuestionSeconds);
+        if (!linesOk) {
+          DOM.minTimeWarning.textContent = `⏰ Tiempo restante: ${formatSecondsMMSS(remainingOpen)} · Debes redactar mínimo ${CONFIG.minSignificantLines} líneas significativas. Al llegar a 00:00 se guardará y avanzará automáticamente.`;
+          DOM.minTimeWarning.classList.remove("ready");
+        } else {
+          DOM.minTimeWarning.textContent = `✔ Respuesta mínima completada · Tiempo restante: ${formatSecondsMMSS(remainingOpen)}. Puedes continuar antes de que termine.`;
+          DOM.minTimeWarning.classList.add("ready");
+        }
+        DOM.btnNextQuestion.disabled = !linesOk;
+      }
+    }
+
+    function syncActiveOpenTextarea() {
+      if (!isClosedPhase() && examState.currentIndex >= CLOSED_QUESTIONS.length) {
+        const openIdx = examState.currentIndex - CLOSED_QUESTIONS.length;
+        const q = OPEN_QUESTIONS[openIdx];
+        if (q && DOM.openTextarea) {
+          examState.openAnswers[q.id] = DOM.openTextarea.value;
+        }
+      }
+    }
+
+    function advanceToNextQuestion(autoByTimeout = false) {
+      syncActiveOpenTextarea();
+
+      const totalQuestionsCount = CLOSED_QUESTIONS.length + OPEN_QUESTIONS.length;
+      if (examState.currentIndex < totalQuestionsCount - 1) {
+        examState.currentIndex += 1;
+        examState.currentQuestionSeconds = 0;
+        renderCurrentQuestion(false);
+        if (autoByTimeout) {
+          showCustomAlert(
+            "⏰ Tiempo de Pregunta Abierta Finalizado",
+            "El tiempo máximo de 5 minutos para esta pregunta abierta terminó. Se guardó automáticamente tu respuesta y se avanzó a la siguiente pregunta."
+          );
+        }
+      } else {
+        if (autoByTimeout) {
+          finalizeEvaluation("Evaluación completada (tiempo agotado en la última pregunta abierta)");
+        } else {
+          finalizeEvaluation("Evaluación completada normalmente por el estudiante");
+        }
+      }
+    }
+
+    DOM.btnNextQuestion.addEventListener("click", () => {
+      advanceToNextQuestion(false);
+    });
+
+    function startMasterClock() {
+      if (mainInterval) clearInterval(mainInterval);
+      mainInterval = setInterval(() => {
+        if (!examState.active || examState.finished) return;
+
+        examState.elapsedTotalSeconds += 1;
+        examState.currentQuestionSeconds += 1;
+
+        updateTopMonitoringBar();
+        updateQuestionTimerUI();
+        updateQuestionNavigationState();
+        saveProgressToStorage();
+
+        if (examState.elapsedTotalSeconds >= CONFIG.totalTimeSeconds) {
+          syncActiveOpenTextarea();
+          finalizeEvaluation("Tiempo total de la evaluación agotado (45 minutos)");
+          return;
+        }
+
+        if (!isClosedPhase() && examState.currentQuestionSeconds >= CONFIG.maxOpenTimeSeconds) {
+          advanceToNextQuestion(true);
+        }
+      }, 1000);
+    }
+
+
+    /*************************************************************************
+     * AVANCE MANUAL DE PREGUNTA — USO EXCLUSIVO DEL DOCENTE
+     *************************************************************************/
+    DOM.btnTeacherNext.addEventListener("click", () => {
+      if (!examState.active || examState.finished) return;
+      DOM.teacherNextPasswordInput.value = "";
+      DOM.teacherNextErrorMsg.classList.add("hidden");
+      DOM.modalTeacherNext.classList.remove("hidden");
+      setTimeout(() => DOM.teacherNextPasswordInput.focus(), 50);
+    });
+
+    DOM.btnCancelTeacherNext.addEventListener("click", () => {
+      DOM.modalTeacherNext.classList.add("hidden");
+    });
+
+    DOM.btnConfirmTeacherNext.addEventListener("click", () => {
+      if (DOM.teacherNextPasswordInput.value.trim() !== CONFIG.teacherPassword) {
+        DOM.teacherNextErrorMsg.textContent = "Contraseña incorrecta";
+        DOM.teacherNextErrorMsg.classList.remove("hidden");
+        return;
+      }
+      DOM.modalTeacherNext.classList.add("hidden");
+      syncActiveOpenTextarea();
+      advanceToNextQuestion(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    /*************************************************************************
+     * CIERRE DE PREGUNTAS CERRADAS — USO EXCLUSIVO DEL DOCENTE
+     *************************************************************************/
+    if (DOM.btnFinishClosedTeacher) DOM.btnFinishClosedTeacher.addEventListener("click", () => {
+      if (!examState.active || examState.finished || !isClosedPhase()) return;
+      const closedAnsweredCount = CLOSED_QUESTIONS.filter(item => Boolean(examState.closedAnswers[item.id])).length;
+      if (DOM.closedProgressModal) {
+        DOM.closedProgressModal.textContent = `Progreso Parte I: ${closedAnsweredCount} de ${CLOSED_QUESTIONS.length} respondidas · ${CLOSED_QUESTIONS.length - closedAnsweredCount} sin responder`;
+      }
+      DOM.closedTeacherPasswordInput.value = "";
+      DOM.closedTeacherErrorMsg.classList.add("hidden");
+      DOM.modalFinishClosed.classList.remove("hidden");
+      DOM.closedTeacherPasswordInput.focus();
+    });
+    if (DOM.btnCancelFinishClosed) DOM.btnCancelFinishClosed.addEventListener("click", () => DOM.modalFinishClosed.classList.add("hidden"));
+    if (DOM.btnConfirmFinishClosed) DOM.btnConfirmFinishClosed.addEventListener("click", () => {
+      if (DOM.closedTeacherPasswordInput.value.trim() !== CONFIG.teacherPassword) {
+        DOM.closedTeacherErrorMsg.classList.remove("hidden");
+        return;
+      }
+      DOM.modalFinishClosed.classList.add("hidden");
+      // Registra el progreso alcanzado al momento del cierre docente de la Parte I.
+      examState.closedPhaseAnsweredCount = CLOSED_QUESTIONS.filter(item => Boolean(examState.closedAnswers[item.id])).length;
+      examState.closedPhaseClosedByTeacher = true;
+      examState.closedPhaseClosedAtISO = new Date().toISOString();
+      // Cierra solo la Parte I. El examen continúa inmediatamente en la primera pregunta abierta.
+      examState.currentIndex = CLOSED_QUESTIONS.length;
+      examState.currentQuestionSeconds = 0;
+      renderCurrentQuestion(false);
+      saveProgressToStorage();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    /*************************************************************************
+     * BOTÓN DE USO EXCLUSIVO DEL DOCENTE (MR. CRISTIAN AYAZO)
+     *************************************************************************/
+    DOM.btnTeacherFinish.addEventListener("click", () => {
+      if (examState.finished) return;
+      if (!examState.active) {
+        showCustomAlert("Sin evaluación activa", "El botón de finalización total solo está disponible después de iniciar o reanudar una evaluación.");
+        return;
+      }
+      DOM.teacherPasswordInput.value = "";
+      DOM.teacherErrorMsg.classList.add("hidden");
+      DOM.modalTeacher.classList.remove("hidden");
+      DOM.teacherPasswordInput.focus();
+    });
+
+    DOM.btnCancelTeacher.addEventListener("click", () => {
+      DOM.modalTeacher.classList.add("hidden");
+    });
+
+    DOM.btnConfirmTeacher.addEventListener("click", () => {
+      const entered = DOM.teacherPasswordInput.value.trim();
+      if (entered !== CONFIG.teacherPassword) {
+        DOM.teacherErrorMsg.textContent = "Contraseña incorrecta";
+        DOM.teacherErrorMsg.classList.remove("hidden");
+        return;
+      }
+
+      DOM.modalTeacher.classList.add("hidden");
+      if (!examState.studentName) {
+        examState.studentName = DOM.studentNameInput.value.trim() || "Estudiante (Finalizado por docente)";
+      }
+      if (!examState.startTimeISO) {
+        examState.startTimeISO = new Date().toISOString();
+      }
+      syncActiveOpenTextarea();
+      finalizeEvaluation("Evaluación finalizada por el docente");
+    });
+
+    /*************************************************************************
+     * CALIFICACIÓN ACADÉMICA:
+     * - 12 Preguntas Cerradas = 3.70 puntos (0.31 pts Q1..Q10, 0.30 pts Q11..Q12)
+     * - 3 Preguntas Abiertas = 1.30 puntos (0.43 + 0.43 + 0.44)
+     * - Las preguntas abiertas se validan con extensión mínima, diversidad léxica
+     *   y evidencia temática relacionada con cada consigna.
+     *************************************************************************/
+    function gradeOpenQuestion(q, rawAnswer) {
+      const text = (rawAnswer || "").trim();
+      if (!text) {
+        return {
+          earnedPoints: 0.0,
+          sigLines: 0,
+          words: 0,
+          matchedKeywords: 0,
+          statusLabel: "INCORRECTA (Sin respuesta)",
+          isValidatedCorrect: false
+        };
+      }
+
+      const stats = analyzeOpenResponse(text, q);
+
+      if (stats.isCoherent) {
+        return {
+          earnedPoints: q.points,
+          sigLines: stats.significantLines,
+          words: stats.totalWords,
+          matchedKeywords: stats.matchedKeywords,
+          statusLabel: "VALIDADA (extensión + pertinencia temática)",
+          isValidatedCorrect: true
+        };
+      }
+
+      return {
+        earnedPoints: 0.0,
+        sigLines: stats.significantLines,
+        words: stats.totalWords,
+        matchedKeywords: stats.matchedKeywords,
+        statusLabel: stats.significantLines < CONFIG.minSignificantLines
+          ? `INCORRECTA (Menos de 4 líneas: ${stats.significantLines}/4)`
+          : "INCORRECTA (Sin coherencia con la pregunta)",
+        isValidatedCorrect: false
+      };
+    }
+
+    function computeEvaluationResults() {
+      let correctCount = 0;
+      let closedScoreSum = 0;
+      const closedAnsweredCount = CLOSED_QUESTIONS.filter(q => Boolean(examState.closedAnswers[q.id])).length;
+
+      const closedDetails = CLOSED_QUESTIONS.map(q => {
+        const chosen = examState.closedAnswers[q.id] || "Sin responder";
+        const isCorrect = chosen === q.correct;
+        const earned = isCorrect ? q.points : 0.0;
+        if (isCorrect) {
+          correctCount++;
+          closedScoreSum += q.points;
+        }
+        return {
+          id: q.id,
+          topic: q.topic,
+          chosen,
+          correct: q.correct,
+          isCorrect,
+          points: q.points,
+          earnedPoints: +earned.toFixed(2)
+        };
+      });
+
+      const closedScore = +closedScoreSum.toFixed(2);
+
+      let openScoreSum = 0;
+      let validatedOpenCount = 0;
+
+      const openDetails = OPEN_QUESTIONS.map((q, idx) => {
+        const ans = examState.openAnswers[q.id] || "";
+        const rubric = gradeOpenQuestion(q, ans);
+        if (rubric.isValidatedCorrect) validatedOpenCount++;
+        openScoreSum += rubric.earnedPoints;
+        return {
+          number: idx + 1,
+          id: q.id,
+          topic: q.topic,
+          stem: q.stem,
+          answer: ans,
+          sigLines: rubric.sigLines,
+          words: rubric.words,
+          matchedKeywords: rubric.matchedKeywords,
+          statusLabel: rubric.statusLabel,
+          isValidatedCorrect: rubric.isValidatedCorrect,
+          score: +rubric.earnedPoints.toFixed(2),
+          maxScore: +q.points.toFixed(2)
+        };
+      });
+
+      const openScore = +Math.min(CONFIG.openWeight, openScoreSum).toFixed(2);
+      const academicScore = +(closedScore + openScore).toFixed(2);
+      const totalPenalties = +(examState.tabPenalty + examState.noisePenalty).toFixed(2);
+
+      const rawFinal = academicScore - totalPenalties;
+      const finalGrade = +Math.min(CONFIG.scaleMax, Math.max(CONFIG.scaleMin, rawFinal)).toFixed(2);
+      const passed = finalGrade >= CONFIG.passingGrade;
+
+      return {
+        correctCount,
+        closedAnsweredCount,
+        validatedOpenCount,
+        closedScore,
+        openScore,
+        academicScore,
+        tabPenalty: +examState.tabPenalty.toFixed(2),
+        noisePenalty: +examState.noisePenalty.toFixed(2),
+        totalPenalties,
+        finalGrade,
+        passed,
+        closedDetails,
+        openDetails
+      };
+    }
+
+    /*************************************************************************
+     * GENERACIÓN DE HASH Y CÓDIGO QR ESCANEABLE CON EL INFORME COMPLETO
+     *************************************************************************/
+    function generateVerificationHash(name, finalGrade, isoEnd) {
+      const base = `${name}|${finalGrade}|${isoEnd}|GCFL-QUIMICA-G8-SOL`;
+      let h1 = 0x811c9dc5;
+      for (let i = 0; i < base.length; i++) {
+        h1 ^= base.charCodeAt(i);
+        h1 = Math.imul(h1, 0x01000193);
+      }
+      const hex = (h1 >>> 0).toString(16).toUpperCase().padStart(8, "0");
+      const tail = Math.abs(base.length * 97 + Math.round(finalGrade * 100)).toString(36).toUpperCase();
+      return `GCFLQ8-${hex}-${tail}`;
+    }
+
+    function toCleanAsciiForQR(str) {
+      return (str || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\x20-\x7E\n]/g, "");
+    }
+
+    function drawQrUnavailablePlaceholder(ctx, offsetX, offsetY, boxSize) {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(offsetX, offsetY, boxSize, boxSize);
+      ctx.strokeStyle = "#081b38";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(offsetX + 8, offsetY + 8, boxSize - 16, boxSize - 16);
+      ctx.fillStyle = "#081b38";
+      ctx.textAlign = "center";
+      ctx.font = "bold 30px Arial";
+      ctx.fillText("QR NO DISPONIBLE", offsetX + boxSize / 2, offsetY + boxSize / 2 - 10);
+      ctx.font = "18px Arial";
+      ctx.fillText("Consulta el informe en pantalla o PDF", offsetX + boxSize / 2, offsetY + boxSize / 2 + 28);
+    }
+
+    async function buildWhiteBackgroundQrJpeg(qrText) {
+      const cleanText = toCleanAsciiForQR(qrText);
+      const outCanvas = document.createElement("canvas");
+      outCanvas.width = 480;
+      outCanvas.height = 480;
+      const ctx = outCanvas.getContext("2d");
+
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, outCanvas.width, outCanvas.height);
+
+      if (typeof window.QRious === "function") {
+        try {
+          const tempCanvas = document.createElement("canvas");
+          new window.QRious({
+            element: tempCanvas,
+            value: cleanText,
+            size: 440,
+            level: "L",
+            background: "#ffffff",
+            foreground: "#000000"
+          });
+          if (tempCanvas.width > 0) {
+            ctx.drawImage(tempCanvas, 20, 20, 440, 440);
+            return outCanvas.toDataURL("image/jpeg", 0.98);
+          }
+        } catch (err) {
+          console.warn("QRious falló, usando QRCode.js:", err);
+        }
+      }
+
+      DOM.qrTempHolder.innerHTML = "";
+      if (typeof window.QRCode === "function") {
+        try {
+          new window.QRCode(DOM.qrTempHolder, {
+            text: cleanText,
+            width: 420,
+            height: 420,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: window.QRCode.CorrectLevel.L
+          });
+        } catch (e) {
+          console.warn("Error en QRCode.js:", e);
+        }
+      }
+
+      await new Promise(r => setTimeout(r, 140));
+
+      const qrCanvas = DOM.qrTempHolder.querySelector("canvas");
+      const qrImg = DOM.qrTempHolder.querySelector("img");
+
+      if (qrCanvas && qrCanvas.width > 0) {
+        ctx.drawImage(qrCanvas, 30, 30, 420, 420);
+      } else if (qrImg && qrImg.complete && qrImg.naturalWidth > 0) {
+        ctx.drawImage(qrImg, 30, 30, 420, 420);
+      } else {
+        drawQrUnavailablePlaceholder(ctx, 30, 30, 420);
+      }
+
+      return outCanvas.toDataURL("image/jpeg", 0.98);
+    }
+
+    /*************************************************************************
+     * FINALIZACIÓN DE LA EVALUACIÓN, PANTALLA DE RESULTADOS Y PDF CIFRADO
+     *************************************************************************/
+    async function finalizeEvaluation(reason) {
+      if (examState.finished) return;
+
+      syncActiveOpenTextarea();
+
+      examState.active = false;
+      examState.finished = true;
+      examState.finishReason = reason;
+      examState.endTimeISO = new Date().toISOString();
+
+      if (mainInterval) clearInterval(mainInterval);
+      if (welcomeCheckInterval) clearInterval(welcomeCheckInterval);
+      if (audioMonitorFrame) cancelAnimationFrame(audioMonitorFrame);
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(t => t.stop());
+      }
+
+      micReady = false;
+      updateDbPanel(null);
+      setDbPanel(false);
+
+      isInternalTransition = true;
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+
+      DOM.modalFullscreen.classList.add("hidden");
+      DOM.modalMicLost.classList.add("hidden");
+      DOM.modalAlert.classList.add("hidden");
+
+      const summary = computeEvaluationResults();
+      examState.resultsSummary = summary;
+      examState.verificationCode = generateVerificationHash(
+        examState.studentName,
+        summary.finalGrade,
+        examState.endTimeISO
+      );
+
+      saveProgressToStorage();
+      try {
+        localStorage.removeItem(CONFIG.storageKey);
+      } catch (e) {}
+
+      DOM.screenWelcome.classList.add("hidden");
+      DOM.screenExam.classList.add("hidden");
+      DOM.screenResults.classList.remove("hidden");
+      document.body.classList.remove("exam-live");
+      document.body.classList.add("results-view");
+
+      DOM.resStudentName.textContent = examState.studentName;
+      DOM.resFinishReason.textContent = examState.finishReason;
+      DOM.resCorrectCount.textContent = `${summary.correctCount} / ${CLOSED_QUESTIONS.length}`;
+      if (DOM.resClosedAnswered) DOM.resClosedAnswered.textContent = `${summary.closedAnsweredCount} / ${CLOSED_QUESTIONS.length}`;
+      DOM.resClosedScore.textContent = `${summary.closedScore.toFixed(2)} / ${CONFIG.closedWeight.toFixed(2)}`;
+      DOM.resOpenScore.textContent = `${summary.openScore.toFixed(2)} / ${CONFIG.openWeight.toFixed(2)}`;
+      DOM.resTabPenalty.textContent = `-${summary.tabPenalty.toFixed(2)}`;
+      DOM.resNoisePenalty.textContent = `-${summary.noisePenalty.toFixed(2)}`;
+      DOM.resFinalGrade.textContent = summary.finalGrade.toFixed(2);
+      DOM.verificationCodeText.textContent = examState.verificationCode;
+
+      const endDateStr = new Date(examState.endTimeISO).toLocaleString("es-CO");
+      qrReportTextGlobal = [
+        "INFORME EVALUACION QUIMICA 8",
+        `COL: ${CONFIG.institution}`,
+        `DOCENTE: ${CONFIG.teacherName}`,
+        `ESTUDIANTE: ${examState.studentName}`,
+        `PARTE I RESPONDIDAS: ${summary.closedAnsweredCount}/12`,
+        `CERRADAS CORRECTAS: ${summary.correctCount}/12 (${summary.closedScore.toFixed(2)}/3.70)`,
+        `ABIERTAS: ${summary.validatedOpenCount}/3 (${summary.openScore.toFixed(2)}/1.30)`,
+        `PENALIZACION: -${summary.totalPenalties.toFixed(2)}`,
+        `NOTA ESTUDIANTE: ${summary.finalGrade.toFixed(2)} / 5.00 (${summary.passed ? "APROBADO" : "NO APROBADO"})`,
+        `FECHA: ${endDateStr}`,
+        `HASH: ${examState.verificationCode}`
+      ].join("\n");
+
+      DOM.qrReportPreviewBox.textContent = qrReportTextGlobal;
+
+      qrJpegDataUrlGlobal = await buildWhiteBackgroundQrJpeg(qrReportTextGlobal);
+      DOM.qrDisplayImg.src = qrJpegDataUrlGlobal;
+
+      generateAndDownloadEncryptedPDF();
+    }
+
+    function sanitizeFileName(str) {
+      return (str || "ESTUDIANTE")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9_-]/g, "_")
+        .replace(/_+/g, "_")
+        .toUpperCase();
+    }
+
+    function generateAndDownloadEncryptedPDF() {
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        showCustomAlert(
+          "Error de Librería PDF",
+          "No se pudo cargar la librería jsPDF desde el CDN. Verifica tu conexión a internet e intenta nuevamente."
+        );
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      let doc;
+
+      try {
+        doc = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+          encryption: {
+            userPassword: CONFIG.pdfPassword,
+            ownerPassword: CONFIG.pdfPassword,
+            userPermissions: ["print", "modify", "copy", "annot-forms"]
+          }
+        });
+      } catch (err) {
+        doc = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4"
+        });
+      }
+
+      const s = examState.resultsSummary;
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margin = 14;
+      let y = 8;
+
+      function drawPdfBanner(yStart, compact) {
+        if (!bannerForPdfJpeg) bannerForPdfJpeg = window.BANNER_DATA_URL || renderOfficialBannerCanvas();
+        const w = compact ? 110 : pageWidth - margin * 2;
+        const h = w * bannerRatio;
+        const x = (pageWidth - w) / 2;
+        try {
+          doc.setDrawColor(200, 157, 40);
+          doc.setLineWidth(0.5);
+          doc.rect(x - 0.4, yStart - 0.4, w + 0.8, h + 0.8, "S");
+          doc.addImage(bannerForPdfJpeg, "JPEG", x, yStart, w, h);
+        } catch (bannerErr) {
+          console.warn("No se pudo incrustar imagen de banner:", bannerErr);
+        }
+        return yStart + h + 3.5;
+      }
+
+      function checkPageBreak(neededHeight) {
+        if (y + neededHeight > pageHeight - 15) {
+          doc.addPage();
+          y = drawPdfBanner(8, true) + 2;
+        }
+      }
+
+      // 1. BANNER OFICIAL EN LA PRIMERA PÁGINA DEL PDF (en las demás páginas se repite en tamaño reducido)
+      y = drawPdfBanner(y, false);
+
+      // Cinta institucional con el nombre del Mr. Cristian Ayazo
+      doc.setFillColor(8, 27, 56);
+      doc.rect(margin, y, pageWidth - margin * 2, 13, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(8.6);
+      doc.text(
+        `${CONFIG.institution}  |  Área: ${CONFIG.subjectDisplay}  |  Grado: ${CONFIG.grade}°  |  Docente: ${CONFIG.teacherName}`,
+        margin + 3,
+        y + 5
+      );
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.4);
+      doc.setTextColor(254, 240, 138);
+      doc.text(
+        `Examen: ${CONFIG.examName} | Temas: solubilidad, soluto y solvente, factores y curvas de solubilidad`,
+        margin + 3,
+        y + 10
+      );
+
+      y += 17;
+
+      // 2. INFORMACIÓN DEL ESTUDIANTE Y DEL DOCENTE
+      doc.setTextColor(8, 27, 56);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.text("1. INFORMACIÓN DEL ESTUDIANTE Y APLICACIÓN", margin, y);
+      y += 4;
+
+      doc.setDrawColor(203, 213, 225);
+      doc.setFillColor(248, 250, 252);
+      doc.rect(margin, y, pageWidth - margin * 2, 21, "FD");
+
+      doc.setTextColor(30, 41, 59);
+      doc.setFontSize(8.6);
+      const startDateObj = examState.startTimeISO ? new Date(examState.startTimeISO) : new Date();
+      const endDateObj = examState.endTimeISO ? new Date(examState.endTimeISO) : new Date();
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Estudiante:", margin + 3, y + 6.5);
+      doc.setFont("helvetica", "normal");
+      doc.text(String(examState.studentName), margin + 23, y + 6.5);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Asignatura:", margin + 108, y + 6.5);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${CONFIG.subjectDisplay} ${CONFIG.grade}°`, margin + 127, y + 6.5);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Fecha:", margin + 3, y + 13);
+      doc.setFont("helvetica", "normal");
+      doc.text(endDateObj.toLocaleDateString("es-CO"), margin + 21, y + 13);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Hora de inicio:", margin + 60, y + 13);
+      doc.setFont("helvetica", "normal");
+      doc.text(startDateObj.toLocaleTimeString("es-CO"), margin + 85, y + 13);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Hora finalización:", margin + 122, y + 13);
+      doc.setFont("helvetica", "normal");
+      doc.text(endDateObj.toLocaleTimeString("es-CO"), margin + 152, y + 13);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Tiempo empleado:", margin + 3, y + 19);
+      doc.setFont("helvetica", "normal");
+      doc.text(formatSecondsMMSS(examState.elapsedTotalSeconds), margin + 34, y + 19);
+
+      y += 26;
+
+      // 3. RESULTADOS ACADÉMICOS, NOTA DEL ESTUDIANTE Y CÓDIGO QR DE VERIFICACIÓN
+      doc.setTextColor(8, 27, 56);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.text("2. CALIFICACIÓN DEL ESTUDIANTE, INTEGRIDAD Y CÓDIGO QR", margin, y);
+      y += 4;
+
+      const boxHeight = 66;
+      doc.setDrawColor(203, 213, 225);
+      doc.setFillColor(255, 255, 255);
+      doc.rect(margin, y, pageWidth - margin * 2, boxHeight, "FD");
+
+      doc.setTextColor(30, 41, 59);
+      doc.setFontSize(8.6);
+      let ry = y + 6.5;
+      doc.setFont("helvetica", "bold");
+      doc.text("• Progreso Parte I — Respondidas:", margin + 3, ry);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${s.closedAnsweredCount} de ${CLOSED_QUESTIONS.length} preguntas`, margin + 55, ry);
+
+      ry += 5.5;
+      doc.setFont("helvetica", "bold");
+      doc.text("• Correctas Selección Múltiple:", margin + 3, ry);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${s.correctCount} de ${CLOSED_QUESTIONS.length} preguntas`, margin + 55, ry);
+
+      ry += 5.5;
+      doc.setFont("helvetica", "bold");
+      doc.text("• Puntaje Preguntas Cerradas:", margin + 3, ry);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${s.closedScore.toFixed(2)} / 3.70 pts (10 preguntas de 0.31 pts + 2 preguntas de 0.30 pts)`, margin + 55, ry);
+
+      ry += 5.5;
+      doc.setFont("helvetica", "bold");
+      doc.text("• Puntaje Preguntas Abiertas:", margin + 3, ry);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${s.openScore.toFixed(2)} / 1.30 pts (${s.validatedOpenCount} de 3 validadas automáticamente)`, margin + 55, ry);
+
+      ry += 5.5;
+      doc.setFont("helvetica", "bold");
+      doc.text("• Puntaje Académico Bruto:", margin + 3, ry);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${s.academicScore.toFixed(2)} / 5.00 pts`, margin + 55, ry);
+
+      ry += 5.5;
+      doc.setFont("helvetica", "bold");
+      doc.text("• Penalizaciones aplicadas:", margin + 3, ry);
+      doc.setFont("helvetica", "normal");
+      doc.text(
+        `Ventana/pestaña: -${s.tabPenalty.toFixed(2)} (${examState.tabSwitches} salidas) | Ruido (umbral >${CONFIG.micThresholdDb}): -${s.noisePenalty.toFixed(2)} (${examState.noiseEvents.length} alertas)`,
+        margin + 55,
+        ry
+      );
+
+      // Recuadro destacado con la NOTA QUE OBTIENE EL ESTUDIANTE
+      ry += 3.5;
+      doc.setFillColor(8, 27, 56);
+      doc.setDrawColor(200, 157, 40);
+      doc.rect(margin + 3, ry, 126, 10, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(254, 240, 138);
+      doc.text(
+        `NOTA OBTENIDA POR EL ESTUDIANTE:  ${s.finalGrade.toFixed(2)} / 5.00  (${s.passed ? "APROBADO" : "NO APROBADO"})`,
+        margin + 6,
+        ry + 6.6
+      );
+
+      ry += 14.5;
+      doc.setFontSize(8.0);
+      doc.setTextColor(30, 41, 59);
+      doc.setFont("helvetica", "bold");
+      doc.text("Motivo de finalización:", margin + 3, ry);
+      doc.setFont("helvetica", "normal");
+      doc.text(String(examState.finishReason), margin + 37, ry);
+
+      ry += 4.5;
+      doc.setFont("helvetica", "bold");
+      doc.text("Código QR de verificación:", margin + 3, ry);
+      doc.setFont("courier", "bold");
+      doc.text(String(examState.verificationCode), margin + 44, ry);
+
+      ry += 4.2;
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(6.9);
+      doc.setTextColor(100, 116, 139);
+      doc.text(
+        "Nota: el nivel sonoro es una estimación relativa del micrófono; no corresponde a una medición acústica calibrada.",
+        margin + 3,
+        ry
+      );
+
+      if (qrJpegDataUrlGlobal) {
+        try {
+          doc.addImage(qrJpegDataUrlGlobal, "JPEG", pageWidth - margin - 46, y + 5, 43, 43);
+        } catch (qrErr) {
+          console.warn("Error al insertar imagen QR en PDF:", qrErr);
+        }
+      }
+
+      y += boxHeight + 6;
+
+      // 4. DETALLE DE RESPUESTAS DE SELECCIÓN MÚLTIPLE CON VALOR POR PREGUNTA
+      checkPageBreak(45);
+      doc.setTextColor(8, 27, 56);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.text("3. RESPUESTAS DE SELECCIÓN MÚLTIPLE (12 PREGUNTAS — SUMATORIA: 3.70 PTS)", margin, y);
+      y += 5;
+
+      doc.setFontSize(8.0);
+      s.closedDetails.forEach((item, index) => {
+        checkPageBreak(11);
+        doc.setFillColor(index % 2 === 0 ? 248 : 255, index % 2 === 0 ? 250 : 255, index % 2 === 0 ? 252 : 255);
+        doc.rect(margin, y - 3.8, pageWidth - margin * 2, 10, "F");
+
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(30, 41, 59);
+        const topicLine = doc.splitTextToSize(`P${item.id} — ${item.topic}`, pageWidth - margin * 2 - 4)[0];
+        doc.text(topicLine, margin + 2, y);
+
+        y += 4.2;
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(71, 85, 105);
+        doc.text(
+          `Marcada: ${item.chosen} | Clave: ${item.correct} | Puntaje: ${item.earnedPoints.toFixed(2)} / ${item.points.toFixed(2)} pts`,
+          margin + 2,
+          y
+        );
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(item.isCorrect ? 21 : 185, item.isCorrect ? 128 : 28, item.isCorrect ? 61 : 28);
+        doc.text(item.isCorrect ? "CORRECTA" : "INCORRECTA", pageWidth - margin - 24, y);
+        y += 6.2;
+      });
+
+      y += 4;
+
+      // 5. RESPUESTAS ABIERTAS COMPLETAS Y VALIDACIÓN DE COHERENCIA (SUMATORIA: 1.30 PTS)
+      checkPageBreak(28);
+      doc.setTextColor(8, 27, 56);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.text("4. RESPUESTAS ABIERTAS COMPLETAS (3 PREGUNTAS — SUMATORIA: 1.30 PTS)", margin, y);
+      y += 5.5;
+
+      s.openDetails.forEach((op) => {
+        checkPageBreak(24);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8.6);
+        doc.setTextColor(8, 27, 56);
+        doc.text(
+          `Abierta ${op.number} (${op.topic}) — Puntaje obtenido: ${op.score.toFixed(2)} / ${op.maxScore.toFixed(2)} pts | ${op.statusLabel}`,
+          margin,
+          y
+        );
+        y += 4.5;
+
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(7.6);
+        doc.setTextColor(71, 85, 105);
+        doc.text(`Extensión registrada: ${op.sigLines} líneas significativas, ${op.words} palabras totales.`, margin, y);
+        y += 4.5;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.1);
+        doc.setTextColor(30, 41, 59);
+        const answerText = op.answer && op.answer.trim().length > 0
+          ? op.answer.trim()
+          : "[Sin respuesta registrada por el estudiante]";
+        const wrappedLines = doc.splitTextToSize(answerText, pageWidth - margin * 2 - 4);
+
+        wrappedLines.forEach(lineStr => {
+          checkPageBreak(5.2);
+          doc.text(lineStr, margin + 2, y);
+          y += 4.5;
+        });
+
+        y += 3.5;
+      });
+
+      const cleanStudent = sanitizeFileName(examState.studentName);
+      const fileName = `Informe_${CONFIG.subject}_${CONFIG.grade}_${cleanStudent}.pdf`;
+      doc.save(fileName);
+    }
+
+    DOM.btnDownloadPdf.addEventListener("click", () => {
+      generateAndDownloadEncryptedPDF();
+    });
+  </script>
+</body>
+</html>
